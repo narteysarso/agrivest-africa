@@ -81,7 +81,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                 Google
             </Button>
             <div className="mt-4 text-center text-sm">
-                Don't have an account?{" "}
+                Dont have an account?{" "}
                 <Link href="/sign-up" className="underline">
                     Sign up
                 </Link>

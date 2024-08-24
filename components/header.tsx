@@ -22,22 +22,12 @@ export const Header = () => {
       description: "",
     },
     {
-      title: "Product",
-      description: "Managing a small business today is already tough.",
-      items: [
-        {
-          title: "Investments",
-          href: "/investment",
-        },
-        {
-          title: "Market",
-          href: "/market",
-        },
-        {
-          title: "Dashboards",
-          href: "/dashboards",
-        },
-      ],
+      title: "Farms",
+      href: "/investment",
+    },
+    {
+      title: "Market",
+      href: "/market",
     },
     {
       title: "Company",
@@ -93,7 +83,7 @@ export const Header = () => {
                               </p>
                             </div>
                             <Button size="sm" className="mt-10">
-                              Book a call today
+                              View Products
                             </Button>
                           </div>
                           <div className="flex flex-col text-sm h-full justify-end">
@@ -126,10 +116,6 @@ export const Header = () => {
           /><p className="font-semibold">Agrivest Africa</p>
         </div>
         <div className="flex justify-end w-full gap-4">
-          <Button variant="ghost" className="hidden md:inline">
-            Book a demo
-          </Button>
-          <div className="border-r hidden md:inline"></div>
           <Button variant="outline" >
             <Link href="/sign-in" >
               Sign in

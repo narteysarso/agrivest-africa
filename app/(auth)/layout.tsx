@@ -5,7 +5,6 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import Link from "next/link";
 import Image from "next/image";
-import { buttonVariants } from "@/components/ui/button";
 
 const fontSans = FontSans({
   subsets: ["latin"],
