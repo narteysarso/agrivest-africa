@@ -20,8 +20,8 @@ const AppConfig = {
             privacy: "/privacy",
             termsandservices: "/termsandservices",
             about: "/about",
-            signup: "/sign-up",
-            signin: "/sign-in",
+            signup: "/signup",
+            signin: "/signin",
             protected: {
                 admin: {
                     farms: "/admin/farms",

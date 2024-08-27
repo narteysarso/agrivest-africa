@@ -1,3 +1,4 @@
+import AppConfig from '@/app.config';
 import Staff from '@/database/mongoose/models/Staff';
 import { verfiyPassword } from '@/lib/helpers';
 import { AuthOptions } from "next-auth";
@@ -12,7 +13,7 @@ const dummyStaffs: Staff[] = [
     },
     {
         email: "narteysarso@gmail.com",
-        role: "user"
+        role: "staff"
     }
 ]
 
@@ -88,6 +89,6 @@ export const authOptions: AuthOptions = {
         }
     },
     pages: {
-        signIn: '/sign-in',
+        signIn: AppConfig.routes.pages.signin
     }
 }
