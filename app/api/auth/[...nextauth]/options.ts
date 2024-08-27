@@ -1,10 +1,11 @@
+import Staff from '@/database/mongoose/models/Staff';
+import { verfiyPassword } from '@/lib/helpers';
 import { AuthOptions } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { pages } from "next/dist/build/templates/app-page";
 
-type User = { email: string, role: string }
-const dummyUsers: User[] = [
+type Staff = { email: string, role: string }
+const dummyStaffs: Staff[] = [
     {
         email: "narteysarso@gmail.com",
         role: "admin"
@@ -16,13 +17,51 @@ const dummyUsers: User[] = [
 ]
 
 
-export const options: AuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
+        CredentialsProvider({
+            name: "Login With Email",
+            credentials: {
+                email: {
+                    label: "email",
+                    type: "email",
+                    placeholder: "name@example.com"
+                },
+                password: {
+                    label: "password",
+                    type: "password",
+                    placeholder: "******"
+                }
+            },
+            async authorize(credentials, req) {
+
+                try {
+                    if (!credentials?.email || !credentials?.password) throw Error("Invalid request body");
+
+                    console.log(credentials);
+
+                    const foundStaff = await Staff.findOne({ email: credentials.email });
+
+                    if (!foundStaff) throw Error("Staff not found");
+
+                    if (!verfiyPassword(credentials.password, foundStaff.password)) throw Error("Invalid user credentials");
+
+                    // perform DTO on `foundStaff` before return;
+                    delete foundStaff.password;
+
+                    return foundStaff;
+
+                } catch (error) {
+                    console.log(error);
+                }
+
+                return null
+            },
+        }),
         GoogleProvider({
             profile(profile) {
-                console.log("Profile of google:", profile);
 
-                const user = dummyUsers.find(user => user.email === profile.email);
+                const user = dummyStaffs.find(user => user.email === profile.email);
 
                 if (!user) return profile;
 
@@ -47,5 +86,8 @@ export const options: AuthOptions = {
             if (session?.user) session.user.role = token.role as string;
             return session;
         }
+    },
+    pages: {
+        signIn: '/sign-in',
     }
 }

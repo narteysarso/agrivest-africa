@@ -8,32 +8,60 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoaderCircle } from "lucide-react"
 import Link from "next/link"
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { GoogleSignInButton } from './authBottons'
+import AppConfig from '@/app.config'
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+    csrfToken?: string;
+    redirect?: string;
+}
 
-export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
+export function UserLoginForm({ className, csrfToken, redirect, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [errors, setErrors] = React.useState<string | null>();
+    const router = useRouter();
 
-    async function onSubmit(event: React.SyntheticEvent) {
-        event.preventDefault()
-        setIsLoading(true)
+    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
 
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000)
+        try {
+            setIsLoading(true)
+            event.preventDefault()
+
+            const data = new FormData(event.currentTarget);
+            setErrors(null);
+
+            const signInResponse = await signIn("credentials", {
+                email: data.get("email"),
+                password: data.get("password"),
+                redirect: false
+            });
+
+            if (signInResponse && signInResponse.error) {
+                setErrors(signInResponse.error);
+            } else {
+                router.push(redirect || AppConfig.routes.pages.protected.admin.overview);
+            }
+
+        } catch (error: any) {
+            setErrors(error?.message)
+        } finally {
+            setIsLoading(false);
+        }
+
     }
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
             <form onSubmit={onSubmit}>
                 <div className="grid gap-4">
-
                     <div className="grid gap-2">
                         <Label htmlFor="email">
                             Email
                         </Label>
                         <Input
-                            id="email"
+                            name='email'
                             placeholder="name@example.com"
                             type="email"
                             autoCapitalize="none"
@@ -47,13 +75,20 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                             Password
                         </Label>
                         <Input
-                            id="password"
+                            name="password"
                             placeholder="****"
                             type="password"
                             autoCorrect="off"
                             disabled={isLoading}
                         />
                     </div>
+                    {
+                        errors && (
+                            <span className='p-4 mb-2 text-white bg-red-500 w-full'>
+                                {errors}
+                            </span>
+                        )
+                    }
                     <Button disabled={isLoading}>
                         {isLoading && (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
@@ -72,17 +107,10 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" type="button" disabled={isLoading}>
-                {isLoading ? (
-                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    ""
-                )}{" "}
-                Google
-            </Button>
+            <GoogleSignInButton />
             <div className="mt-4 text-center text-sm">
                 Dont have an account?{" "}
-                <Link href="/sign-up" className="underline">
+                <Link href={AppConfig.routes.pages.signup} className="underline">
                     Sign up
                 </Link>
             </div>

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LoaderCircle } from "lucide-react"
 import Link from "next/link"
+import AppConfig from '@/app.config'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -80,7 +81,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
             <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/sign-in" className="underline">
+                <Link href={AppConfig.routes.pages.signin} className="underline">
                     Sign in
                 </Link>
             </div>
