@@ -1,3 +1,4 @@
+
 export type NavigationItemsType = {
     title: string,
     href: string,
@@ -5,19 +6,31 @@ export type NavigationItemsType = {
     items?: NavigationItemsType[]
 }
 
+export enum StaffStatus {
+    ACTIVE = "active",
+    INACTIVE = "inactive"
+}
+
 export interface StaffInput {
     firstname: string;
     lastname: string;
     email: string;
     password: string;
+    role: string;
 }
 
-export interface StaffData extends StaffInput {
+export interface StaffData {
+    id: string;
+    fullname: string;
     firstname: string;
     lastname: string;
+    image: string;
+    status: StaffStatus;
+    role: string;
     email: string;
     createdAt: Date;
-    updatedAt: Date;
+    deletedAt: Date;
+    lastseen: Date;
 }
 
 /// Util types
@@ -29,7 +42,7 @@ export interface PasswordMananger {
 /// Database types
 
 export interface DatabaseInterface {
-    createStaff(input: StaffInput): Promise<any>;
+    createStaff(input: Partial<StaffData>): Promise<any>;
     findStaff(query: any, options: any): Promise<any>;
     loginStaff({ email, password }: { email: string, password: string }): Promise<boolean>
     deleteAllStaffs(): Promise<any>;

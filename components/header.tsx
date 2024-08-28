@@ -14,6 +14,7 @@ import { mainNavigationItems } from '@/constants/user-nav';
 import MobileNav from './mobile-nav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import AppConfig from '@/app.config';
 
 export const Header = async () => {
 
@@ -84,26 +85,21 @@ export const Header = async () => {
           {
             session && session.user.role === "admin" ? (
               <>
-                <Button>
-                  <Link href="/customer" >
-                    Get started
-                  </Link>
-                </Button>
                 <Button variant={"outline"}>
-                  <Link href="/admin" >
+                  <Link href={AppConfig.routes.pages.protected.admin.overview} >
                     Dashboard
                   </Link>
                 </Button>
               </>
             ) : session?.user.role === "customer" ? (
               <Button>
-                <Link href="/customer" >
-                  Get started
+                <Link href={AppConfig.routes.pages.protected.investor.overview} >
+                  Dashboard
                 </Link>
               </Button>
             ) : (
               <Button >
-                <Link href="/sign-in" >
+                <Link href={AppConfig.routes.pages.signin} >
                   Get started
                 </Link>
               </Button>

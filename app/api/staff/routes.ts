@@ -1,13 +1,13 @@
 import Staff from '@/database/mongoose/models/Staff';
 import { hashPassword } from '@/lib/helpers';
-import { StaffData } from '@/types';
+import { StaffInput } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 
 const staffHandler = async (req: NextRequest) => {
     try {
         const body = await req.json();
-        const userData: StaffData = body.formData;
+        const userData: StaffInput = body.formData;
 
 
         //Todo: payload validation;

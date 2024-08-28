@@ -1,15 +1,14 @@
+import Authfooter from '@/components/auth/auth-footer'
+import { UserAuthForm } from '@/components/auth/user-auth-form'
 import { Metadata } from "next"
-import Link from "next/link"
 
-import { UserAuthForm } from "../component/user-auth-form"
-import Authfooter from '../component/auth-footer'
 
 export const metadata: Metadata = {
-    title: "Sign Up",
+    title: "Agrivest Africa | Sign Up",
     description: "Create Account",
 }
 
-export default function AuthenticationPage() {
+export default function Page() {
     return (
         <>
             <div className="lg:p-8">
@@ -23,7 +22,7 @@ export default function AuthenticationPage() {
                         </p>
                     </div>
                     <UserAuthForm />
-                   <Authfooter />
+                    <Authfooter />
                 </div>
             </div>
         </>

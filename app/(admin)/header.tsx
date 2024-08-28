@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { MoveRight, X } from "lucide-react";
 import Image from "next/image";
-import { UserNav } from './admin/components/user-nav';
+import { UserNav } from '../../components/admin/user-nav';
 import { navigationItems } from '@/constants/user-nav';
 
 export const Header = () => {
@@ -77,7 +77,7 @@ export const Header = () => {
                     <UserNav />
 
                 </div>
-                
+
             </div>
         </header>
     );

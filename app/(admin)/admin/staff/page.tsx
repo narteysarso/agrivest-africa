@@ -41,27 +41,10 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import AppConfig from '@/app.config'
-import AddStaff from '../components/add-staff-dailog'
+import AddStaff from '../../../../components/admin/add-staff-dailog'
+import { StaffData, StaffStatus } from '@/types'
 
-enum StaffStatus {
-    ACTIVE = "active",
-    INACTIVE = "inactive"
-}
-
-interface StaffData {
-    fullname: string;
-    firstname: string;
-    lastname: string;
-    image: string;
-    status: StaffStatus;
-    role: string;
-    email: string;
-    createdAt: Date;
-    deletedAt: Date;
-    lastseen: Date;
-}
-
-const StaffRole = (staffDetails: Partial<StaffData>) => {
+const StaffCard = (staffDetails: Partial<StaffData>) => {
 
     const { image, fullname, createdAt, lastseen, role, status, deletedAt } = staffDetails;
     return (

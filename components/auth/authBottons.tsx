@@ -9,8 +9,16 @@ import { useState } from 'react'
 
 export const GoogleSignInButton = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setErrors] = useState<string>();
     const handleClick = () => {
-        signIn("google");
+        try {
+            setIsLoading(true);
+            signIn("google");
+        } catch (error) {
+            setErrors("Failed to authenticate with google");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -24,10 +32,19 @@ export const GoogleSignInButton = () => {
         </Button>
     )
 }
+
 export const FacebookSignInButton = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const handleClick = () => {
-        signIn("facebook")
+    const [error, setErrors] = useState<string>()
+    const handleClick = async () => {
+        try {
+            setIsLoading(true);
+            await signIn("facebook")
+        } catch (error: any) {
+            setErrors(error.message)
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -44,12 +61,13 @@ export const FacebookSignInButton = () => {
 
 export const LinkedInSignInButton = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setErrors] = useState<string>()
     const handleClick = async () => {
         try {
             setIsLoading(true);
             await signIn("linkedin");
-        } catch (error) {
-
+        } catch (error: any) {
+            setErrors(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -70,16 +88,17 @@ export const LinkedInSignInButton = () => {
 
 export const SignOutButton = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setErrors] = useState<string>()
     const router = useRouter();
-    const handleClick = () => {
+    const handleClick = async () => {
 
         try {
             if (!confirm("Do you want to sign out?")) return;
             setIsLoading(true);
-            signOut();
+            await signOut();
             router.push(AppConfig.routes.pages.home);
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setErrors(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -96,6 +115,7 @@ export const SignOutButton = () => {
         </Button>
     )
 }
+
 
 
 

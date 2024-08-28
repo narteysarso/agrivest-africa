@@ -1,5 +1,4 @@
 import { Metadata } from "next"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -14,13 +13,12 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { CalendarDateRangePicker } from "./components/date-range-picker"
-import { Overview } from "./components/overview"
-import { RecentSales } from "./components/recent-sales"
-import OrdersList from './components/orders-list'
-import { Analytics } from './components/analytics'
-import Chartt from './components/chart'
-import { Search } from './components/search'
+import { CalendarDateRangePicker } from "../../../components/admin/date-range-picker"
+import { Overview } from "../../../components/admin/overview"
+import { RecentSales } from "../../../components/admin/recent-sales"
+import OrdersList from '../../../components/admin/orders-list'
+import { Analytics } from '../../../components/admin/analytics'
+import { Search } from '../../../components/admin/search'
 export const metadata: Metadata = {
     title: "Admin Dashboard",
     description: "Example dashboard app built using the components.",
@@ -38,17 +36,17 @@ export default function DashboardPage() {
             </div>
             <Tabs defaultValue="overview" className="space-y-4">
                 <div className='flex justify-between'>
-                <TabsList>
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="orders" >
-                        Orders
-                    </TabsTrigger>
-                    <TabsTrigger value="analytics" >
-                        Analytics
-                    </TabsTrigger>
-                    
-                </TabsList>
-                <Search />
+                    <TabsList>
+                        <TabsTrigger value="overview">Overview</TabsTrigger>
+                        <TabsTrigger value="orders" >
+                            Orders
+                        </TabsTrigger>
+                        <TabsTrigger value="analytics" >
+                            Analytics
+                        </TabsTrigger>
+
+                    </TabsList>
+                    <Search />
                 </div>
                 <TabsContent value="overview" className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

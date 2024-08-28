@@ -5,11 +5,8 @@ import { CircleX, Plus } from 'lucide-react'
 import React, { useState } from 'react'
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
-    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
@@ -29,10 +26,10 @@ function AddStaff() {
                     <AlertDialogTitle className='flex items-center justify-between'>
                         <p>Add new staff</p>
                         <Button variant={"ghost"} onClick={() => setOpen(false)}>
-                        <CircleX />
+                            <CircleX />
                         </Button>
                     </AlertDialogTitle>
-                    
+
                     <AlertDialogDescription>
                         Provided the required information
                     </AlertDialogDescription>

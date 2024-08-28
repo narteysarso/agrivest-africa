@@ -39,8 +39,6 @@ export const authOptions: AuthOptions = {
                 try {
                     if (!credentials?.email || !credentials?.password) throw Error("Invalid request body");
 
-                    console.log(credentials);
-
                     const foundStaff = await Staff.findOne({ email: credentials.email });
 
                     if (!foundStaff) throw Error("Staff not found");

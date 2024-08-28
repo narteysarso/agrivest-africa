@@ -19,8 +19,6 @@ const verifyRolePath = (role: string, path: string): boolean => {
 export default withAuth(
     function middleware(req) {
 
-        console.log(req.nextauth.token);
-
         if (!verifyRolePath(req.nextauth.token?.role as string, req.nextUrl.pathname)) {
             return NextResponse.rewrite(new URL("/Denied", req.url));
         }

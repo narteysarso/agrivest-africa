@@ -1,4 +1,5 @@
-import { SignOutButton } from '@/app/(auth)/component/authBottons';
+
+
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import {
   Avatar,
@@ -18,6 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { getServerSession } from 'next-auth'
 import Link from 'next/link';
+import { SignOutButton } from '../auth/sign-out-button';
+import AppConfig from '@/app.config';
 
 export async function UserNav() {
 
@@ -63,7 +66,7 @@ export async function UserNav() {
             </>
           ) : (
             <DropdownMenuItem >
-              <Link href="/sign-in">Sign In</Link>
+              <Link href={AppConfig.routes.pages.signin}>Sign In</Link>
               <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
             </DropdownMenuItem>
           )

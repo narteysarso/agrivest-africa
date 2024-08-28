@@ -1,3 +1,5 @@
+import { default_literals } from './constants/literals';
+
 export const DEFAULT_DATABASE_PROVIDER = "mongoose";
 
 const AppConfig = {
@@ -28,6 +30,9 @@ const AppConfig = {
                     investors: "/admin/investors",
                     overview: "/admin",
                     staff: "/admin/staff"
+                },
+                investor: {
+                    overview: "/investor"
                 }
             }
         }
@@ -43,7 +48,8 @@ const AppConfig = {
             }
         },
         defaultProvider: DEFAULT_DATABASE_PROVIDER
-    }
+    },
+    literals: default_literals
 }
 
 export default AppConfig;
