@@ -29,6 +29,34 @@ export const navigationItems: NavigationItemsType[] = [
     },
 ];
 
+export const investorNavigationItems: NavigationItemsType[] = [
+    {
+        title: "Home",
+        href: AppConfig.routes.pages.home,
+        description: "",
+    },
+    {
+        title: "Overview",
+        href: AppConfig.routes.pages.protected.investor.overview,
+        description: "",
+    },
+    {
+        title: "Investors",
+        href: AppConfig.routes.pages.protected.admin.investors,
+        description: "",
+    },
+    {
+        title: "Farms",
+        href: AppConfig.routes.pages.protected.admin.farms,
+        description: "",
+    },
+    {
+        title: "Staff",
+        href: AppConfig.routes.pages.protected.admin.staff,
+        description: "",
+    },
+];
+
 export const mainNavigationItems = [
     {
         title: "Home",

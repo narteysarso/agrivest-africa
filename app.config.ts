@@ -32,7 +32,8 @@ const AppConfig = {
                     staff: "/admin/staff"
                 },
                 investor: {
-                    overview: "/investor"
+                    overview: "/investor",
+                    farms: "/investor/farms"
                 }
             }
         }

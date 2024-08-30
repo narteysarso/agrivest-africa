@@ -42,7 +42,8 @@ import {
 } from "@/components/ui/tabs"
 import AppConfig from '@/app.config'
 import AddStaff from '../../../../components/admin/add-staff-dailog'
-import { StaffData, StaffStatus } from '@/types'
+import { StaffStatus } from '@/types'
+import { StaffData } from '@/types/services/staff.service'
 
 const StaffCard = (staffDetails: Partial<StaffData>) => {
 

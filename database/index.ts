@@ -4,22 +4,22 @@
  * We use strategy pattern to spin different databases based on a database configuration
  */
 import { hashPassword, verfiyPassword } from '@/lib/helpers';
-import { DatabaseFactory, DatabaseInterface, DatabaseProviderName, PasswordMananger } from '@/types';
-import makeMongooseDB from './mongoose';
+import { DatabaseProviderName, IRepository, PasswordMananger, RepositoryFactory } from '@/types';
 import AppConfig from '@/app.config';
+import makeMongooseRepo from './mongoose';
 
-const databaseConfigs: { [key: string]: DatabaseFactory } = {
-    "mongoose": makeMongooseDB
+const databaseConfigs: { [key: string]: RepositoryFactory } = {
+    "mongoose": makeMongooseRepo
 }
 
 const passwordManager: PasswordMananger = { hashPassword, verfiyPassword };
 
-const databaseProvider = databaseConfigs[AppConfig.database.defaultProvider as DatabaseProviderName];
+const repositoryProvider = databaseConfigs[AppConfig.database.defaultProvider as DatabaseProviderName];
 
-if (!databaseProvider) throw new Error("Unkwon database provider specified");
+if (!repositoryProvider) throw new Error("Unkwon database provider specified");
 
-const database: DatabaseInterface = databaseProvider({ passwordManager });
+export const staffRepository: IRepository = repositoryProvider({ passwordManager }, "staff");
+export const investorRepository: IRepository = repositoryProvider({ passwordManager }, "investor");
 
-export default database;
 
 
