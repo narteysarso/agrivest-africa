@@ -22,14 +22,14 @@ export const GoogleSignInButton = () => {
     }
 
     return (
-        <Button variant="outline" type="button" disabled={isLoading} onClick={handleClick}>
-            {isLoading ? (
-                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-                ""
-            )}{" "}
-            Google
-        </Button>
+         <Button variant="outline" type="button" disabled={isLoading}>
+                {isLoading ? (
+                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                    ""
+                )}{" "}
+                Google
+            </Button>
     )
 }
 

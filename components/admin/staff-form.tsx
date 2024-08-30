@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { StaffPayloadSchema } from '@/types/services/staff.service'
 
 const FormSchema = z.object({
     firstname: z.string().min(2, {
@@ -39,15 +40,25 @@ export default function StaffForm() {
         },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
+        console.log(data);
+        const results = StaffPayloadSchema.safeParse(data);
+        if (!results.success) {
+            console.log(results.error.issues); //.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), "")
+        }
+
+        const response = await fetch("/api/staff", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(results.data)
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
     }
 
     return (

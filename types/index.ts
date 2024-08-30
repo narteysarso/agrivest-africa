@@ -1,3 +1,7 @@
+import { z } from 'zod';
+import { StaffPayload } from './services/staff.service';
+import mongoose from 'mongoose';
+import { InvestorPayload } from './services/investor.service';
 
 export type NavigationItemsType = {
     title: string,
@@ -11,6 +15,11 @@ export enum StaffStatus {
     INACTIVE = "inactive"
 }
 
+export enum StaffRole {
+    ADMIN = "admin",
+    STAFF = "staff"
+}
+
 export interface StaffInput {
     firstname: string;
     lastname: string;
@@ -18,20 +27,20 @@ export interface StaffInput {
     password: string;
     role: string;
 }
-
-export interface StaffData {
-    id: string;
-    fullname: string;
+export interface InvestorInput {
     firstname: string;
     lastname: string;
-    image: string;
-    status: StaffStatus;
-    role: string;
     email: string;
-    createdAt: Date;
-    deletedAt: Date;
-    lastseen: Date;
+    password: string;
 }
+
+// http types
+export interface HttpErrorOption {
+    headers: object;
+    statusCode: number;
+    data: object;
+}
+
 
 /// Util types
 export interface PasswordMananger {
@@ -41,13 +50,18 @@ export interface PasswordMananger {
 
 /// Database types
 
-export interface DatabaseInterface {
-    createStaff(input: Partial<StaffData>): Promise<any>;
-    findStaff(query: any, options: any): Promise<any>;
-    loginStaff({ email, password }: { email: string, password: string }): Promise<boolean>
-    deleteAllStaffs(): Promise<any>;
+export interface IRepositoryDependency {
+    passwordManager: PasswordMananger,
 }
 
-export type DatabaseFactory = ({ passwordManager }: { passwordManager: PasswordMananger }) => DatabaseInterface;
+export interface IRepository {
+    create(input: Partial<StaffPayload | InvestorPayload>): Promise<mongoose.Document>;
+    find(query: any, options: any): Promise<any>;
+    update(query: any, updatedata: StaffPayload|InvestorPayload): Promise<mongoose.Document | null>
+    login({ email, password }: { email: string, password: string }): Promise<boolean>
+    deleteAll(): Promise<any>;
+}
+
+export type RepositoryFactory = (dependencies: IRepositoryDependency, repository: string) => IRepository;
 
 export type DatabaseProviderName = "mongoose" | "postgres";

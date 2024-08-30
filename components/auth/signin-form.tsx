@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import AppConfig from '@/app.config'
 import { GoogleSignInButton } from './authBottons'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 
 const DEFUALT_PASSWORD_LENGTH = 6
@@ -30,7 +31,7 @@ const FormSchema = z.object({
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-export default function LoginForm({ ...props }: UserAuthFormProps) {
+export default function LoginForm({className, ...props }: UserAuthFormProps) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -69,7 +70,8 @@ export default function LoginForm({ ...props }: UserAuthFormProps) {
     }
 
     return (
-        <div {...props}>
+        <div className={cn("grid gap-6", className)} {...props}>
+        
             <Form  {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
 
