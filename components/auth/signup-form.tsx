@@ -1,12 +1,12 @@
 "use client"
-import { useState } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-import { LoaderCircle } from 'lucide-react'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+
+
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { LoaderCircle } from "lucide-react"
+import Link from "next/link"
+import AppConfig from '@/app.config'
 import {
     Form,
     FormControl,
@@ -15,54 +15,56 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-
-import AppConfig from '@/app.config'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { GoogleSignInButton } from './authBottons'
-import Link from 'next/link'
-import { cn } from '@/lib/utils'
-
-
-const FormSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(AppConfig.constants.defaultPasswordLength || 6, "message must be at least 8 characters long")
-})
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+const FormSchema = z.object({
+    email: z.string().email(),
+    firstname: z.string(),
+    lastname: z.string(),
+    password: z.string().min(AppConfig.constants.defaultPasswordLength || 6, "message must be at least 8 characters long")
+});
 
-export default function LoginForm({className, ...props }: UserAuthFormProps) {
+export function SignUpForm({ className, ...props }: UserAuthFormProps) {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [errors, setErrors] = useState<string | null>();
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             email: "",
+            firstname: "",
+            lastname: "",
             password: ""
         },
     })
-    const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState<string | null>();
-    const router = useRouter();
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         try {
-            setErrors(null);
+
             setIsLoading(true);
 
-            const { email, password } = data;
-
-            const signInResponse = await signIn("credentials", {
-                email,
-                password,
-                redirect: false
+            const registerResponse = await fetch(AppConfig.routes.api.investor, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(data)
             });
 
-            if (signInResponse && signInResponse.error) {
-                setErrors(AppConfig.literals.auth.errors.invalid_credentials);
+            if (!registerResponse.ok) {
+                setErrors(AppConfig.literals.investor.registration_default_failed);
             } else {
-                router.push(AppConfig.routes.pages.protected.admin.overview);
+                router.push(AppConfig.routes.pages.signin);
             }
+        } catch (error) {
 
-        } catch (error: any) {
-            setErrors(error?.message)
         } finally {
             setIsLoading(false);
         }
@@ -70,10 +72,36 @@ export default function LoginForm({className, ...props }: UserAuthFormProps) {
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
-        
             <Form  {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
-
+                    <div className='grid grid-cols-2 gap-4'>
+                        <FormField
+                            control={form.control}
+                            name="firstname"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>First Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Joe" {...field} type='text' />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="lastname"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Doe" {...field} type='text' />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                     <FormField
                         control={form.control}
                         name="email"
@@ -112,7 +140,7 @@ export default function LoginForm({className, ...props }: UserAuthFormProps) {
                         {isLoading && (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        Sign In with Email
+                        Sign up with Email
                     </Button>
 
                 </form>
@@ -129,9 +157,9 @@ export default function LoginForm({className, ...props }: UserAuthFormProps) {
             </div>
             <GoogleSignInButton />
             <div className="mt-4 text-center text-sm">
-                Dont have an account?{" "}
-                <Link href={AppConfig.routes.pages.signup} className="underline">
-                    Sign up
+                Already have an account?{" "}
+                <Link href={AppConfig.routes.pages.signin} className="underline">
+                    Sign in
                 </Link>
             </div>
         </div>

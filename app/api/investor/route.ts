@@ -13,8 +13,6 @@ const staffHandler = async (request: NextRequest) => {
 
         const investorInfo: InvestorPayload = await request.json();
 
-        console.log(investorInfo);
-
         switch (request.method) {
             case 'POST':
                 const response = await investorService.register(investorInfo);

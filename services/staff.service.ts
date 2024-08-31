@@ -36,7 +36,7 @@ export default function makeStaffService({ repository }: { repository: IReposito
 
     const findStaffByEmail = async (email: StaffPayload["email"]): Promise<ResponsePayload> => {
 
-        const result = await repository.find({ email }, { lean: false });
+        const result = await repository.find({ email });
 
         if (!result) {
             throw new Error("Staff not found");
@@ -54,7 +54,7 @@ export default function makeStaffService({ repository }: { repository: IReposito
 
     const findStaffById = async (id: StaffPayload["id"]): Promise<ResponsePayload> => {
 
-        const result = await repository.find({ _id: id }, { lean: false });
+        const result = await repository.find({ _id: id });
 
         if (!result) {
             throw new Error("Staff not found");
@@ -94,7 +94,7 @@ export default function makeStaffService({ repository }: { repository: IReposito
     }
 
     const updateStaffPassword = async (id: StaffPayload["id"], oldPassword: StaffPayload["password"], newPassword: StaffPayload["password"]): Promise<ResponsePayload> => {
-        const staff = await repository.find({ _id: id }, { lean: false });
+        const staff = await repository.find({ _id: id });
 
         if (!staff) {
             throw new Error("Staff not found");
@@ -122,7 +122,7 @@ export default function makeStaffService({ repository }: { repository: IReposito
     }
 
     const markStaffDeleted = async (id: StaffPayload["id"]): Promise<ResponsePayload> => {
-        const staff = await repository.find({ _id: id }, { lean: false });
+        const staff = await repository.find({ _id: id });
 
         if (!staff) {
             throw new NotFound("Staff not found");
@@ -150,6 +150,18 @@ export default function makeStaffService({ repository }: { repository: IReposito
     }
 
     const loginStaff = async ({ email, password }: { email: StaffPayload["email"], password: StaffPayload["password"] }): Promise<any> => {
+        if (!email || !password) throw Error("Invalid request body");
+
+        const foundStaff = await repository.find({ email });
+
+        if (!foundStaff) throw Error("Staff not found");
+
+        if (!verfiyPassword(password, foundStaff.password)) throw Error("Invalid user credentials");
+
+        // perform DTO on `foundStaff` before return;
+        delete foundStaff.password;
+
+        return foundStaff;
 
     }
 

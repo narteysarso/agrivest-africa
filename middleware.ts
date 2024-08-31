@@ -10,7 +10,11 @@ const RolePaths: { [key: string]: string[] } = {
         AppConfig.routes.pages.protected.admin.investors,
         AppConfig.routes.pages.protected.admin.staff,
     ],
-    "staff": ["/admin"]
+    "staff": ["/admin"],
+    "investor": [
+        AppConfig.routes.pages.protected.investor.overview,
+        AppConfig.routes.pages.protected.investor.investments
+    ]
 }
 
 
@@ -41,7 +45,6 @@ export default withAuth(
         } else if (!verifyRolePath(req.nextauth.token?.role as string, req.nextUrl.pathname)) {
             return NextResponse.rewrite(new URL("/Denied", req.url));
         }
-
     },
     {
         callbacks: {
@@ -53,6 +56,7 @@ export default withAuth(
 export const config = {
     matcher: [
         "/admin/:path*",
-        "/user"
+        "/user",
+        "/investor/:path*"
     ]
 }

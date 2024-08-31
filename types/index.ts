@@ -27,6 +27,11 @@ export interface StaffInput {
     password: string;
     role: string;
 }
+
+export enum InvestorRole {
+    INVESTOR = 'investor'
+}
+
 export interface InvestorInput {
     firstname: string;
     lastname: string;
@@ -56,8 +61,8 @@ export interface IRepositoryDependency {
 
 export interface IRepository {
     create(input: Partial<StaffPayload | InvestorPayload>): Promise<mongoose.Document>;
-    find(query: any, options: any): Promise<any>;
-    update(query: any, updatedata: StaffPayload|InvestorPayload): Promise<mongoose.Document | null>
+    find(query: any): Promise<any>;
+    update(query: any, updatedata: StaffPayload | InvestorPayload): Promise<mongoose.Document | null>
     login({ email, password }: { email: string, password: string }): Promise<boolean>
     deleteAll(): Promise<any>;
 }

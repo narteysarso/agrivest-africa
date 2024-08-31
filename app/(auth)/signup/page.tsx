@@ -1,5 +1,5 @@
 import Authfooter from '@/components/auth/auth-footer'
-import { UserAuthForm } from '@/components/auth/user-auth-form'
+import { SignUpForm } from '@/components/auth/signup-form'
 import { Metadata } from "next"
 
 
@@ -21,7 +21,7 @@ export default function Page() {
                             Enter your email below to create your account
                         </p>
                     </div>
-                    <UserAuthForm />
+                    <SignUpForm />
                     <Authfooter />
                 </div>
             </div>

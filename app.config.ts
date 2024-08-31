@@ -1,8 +1,12 @@
 import { default_literals } from './constants/literals';
 
 export const DEFAULT_DATABASE_PROVIDER = "mongoose";
+export const DEFUALT_PASSWORD_LENGTH = 6 ;
 
 const AppConfig = {
+    constants: {
+        defaultPasswordLength: DEFUALT_PASSWORD_LENGTH,
+    },
     resource: {
         images: {
             defaultProfileImage: "/placeholder.svg",
@@ -33,7 +37,7 @@ const AppConfig = {
                 },
                 investor: {
                     overview: "/investor",
-                    farms: "/investor/farms"
+                    investments: "/investor/investments"
                 }
             }
         }

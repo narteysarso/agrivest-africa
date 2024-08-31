@@ -37,14 +37,14 @@ export default function DashboardPage() {
             <Tabs defaultValue="overview" className="space-y-4">
                 <div className='flex justify-between'>
                     <TabsList>
-                        <TabsTrigger value="analytics" >
+                        <TabsTrigger value="overview" >
                             Analytics
                         </TabsTrigger>
 
                     </TabsList>
                     <Search />
                 </div>
-                <TabsContent value="analytics" className="space-y-4">
+                <TabsContent value="overview" className="space-y-4">
                     <Analytics />
                 </TabsContent>
             </Tabs>

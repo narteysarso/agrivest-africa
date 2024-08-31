@@ -1,5 +1,6 @@
 import { InvestorInput } from '@/types';
 import mongoose, { Schema } from "mongoose";
+import { string } from 'zod';
 
 mongoose.connect(process.env.MONGODB_URI!);
 
@@ -24,6 +25,9 @@ const investorSchema = new Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+    },
     verified: {
         type: Boolean,
         default: false
@@ -41,8 +45,9 @@ investorSchema.index({ email: 1 });
 investorSchema.virtual("fullname").get(function () {
     return `${this.firstname} ${this.lastname}`;
 });
+investorSchema.path("role").default("investor");
 
 
-const Investor = mongoose.models.Staff || mongoose.model<InvestorDocument>("Investor", investorSchema);
+const Investor = mongoose.models.Investor || mongoose.model<InvestorDocument>("Investor", investorSchema);
 
 export default Investor;

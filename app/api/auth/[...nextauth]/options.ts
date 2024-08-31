@@ -1,7 +1,8 @@
 import AppConfig from '@/app.config';
 import Staff from '@/database/mongoose/models/Staff';
 import { verfiyPassword } from '@/lib/helpers';
-import { AuthOptions } from "next-auth";
+import { userService } from '@/services';
+import { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -35,20 +36,14 @@ export const authOptions: AuthOptions = {
                 }
             },
             async authorize(credentials, req) {
-
                 try {
                     if (!credentials?.email || !credentials?.password) throw Error("Invalid request body");
 
-                    const foundStaff = await Staff.findOne({ email: credentials.email });
+                    const user = await userService.loginStaff({ ...credentials });
 
-                    if (!foundStaff) throw Error("Staff not found");
+                    if (!user) throw new Error("Invalid credentials")
 
-                    if (!verfiyPassword(credentials.password, foundStaff.password)) throw Error("Invalid user credentials");
-
-                    // perform DTO on `foundStaff` before return;
-                    delete foundStaff.password;
-
-                    return foundStaff;
+                    return user;
 
                 } catch (error) {
                     console.log(error);

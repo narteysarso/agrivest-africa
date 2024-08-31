@@ -42,6 +42,6 @@ export interface IStaffService {
     updateStaffPassword(id: StaffData["id"], oldPassword: StaffInput["password"], newPassword: StaffInput["password"]): Promise<ResponsePayload>;
     markStaffDeleted(id: StaffData["id"]): Promise<ResponsePayload>;
     deleteAllStaffs(): Promise<ResponsePayload>;
-    loginStaff({ email, password }: { email: StaffPayload["email"], password: StaffPayload["password"] }): Promise<ResponsePayload>;
+    loginStaff({ email, password }: { email: StaffPayload["email"], password: StaffPayload["password"] }): Promise<any>;
 }
 

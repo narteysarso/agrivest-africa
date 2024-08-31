@@ -10,7 +10,7 @@ import {
 import { MoveRight, X } from "lucide-react";
 import Image from "next/image";
 import { UserNav } from '../../components/admin/user-nav';
-import { navigationItems } from '@/constants/user-nav';
+import { investorNavigationItems} from '@/constants/user-nav';
 
 export const Header = () => {
     return (
@@ -19,7 +19,7 @@ export const Header = () => {
                 <div className="justify-start items-center gap-4 lg:flex hidden flex-row">
                     <NavigationMenu className="flex justify-start items-start">
                         <NavigationMenuList className="flex justify-start gap-4 flex-row">
-                            {navigationItems.map((item) => (
+                            {investorNavigationItems.map((item) => (
                                 <NavigationMenuItem key={item.title}>
                                     {item.href ? (
                                         <>

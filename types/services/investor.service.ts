@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { InvestorInput } from '..';
+import { InvestorInput, InvestorRole } from '..';
 import { ResponsePayload } from '.';
 
 export const InvestorDataSchema = z.object({
@@ -15,12 +15,14 @@ export const InvestorDataSchema = z.object({
     lastseen: z.date()
 })
 
+
 export const InvestorPayloadSchema = z.object({
     id: z.string().optional(),
     firstname: z.string().trim().min(2).max(50),
     lastname: z.string().trim().min(2).max(50),
     image: z.string().trim().min(2).max(256).optional(),
     email: z.string().trim().email(),
+    role: z.nativeEnum(InvestorRole).optional(),
     password: z.string().trim().optional(),
     deletedAt: z.date().optional(),
 })

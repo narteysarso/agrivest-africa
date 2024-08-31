@@ -36,7 +36,7 @@ export default function makeInvestorService({ repository }: { repository: IRepos
 
     const findByEmail = async (email: InvestorPayload["email"]): Promise<ResponsePayload> => {
 
-        const result = await repository.find({ email }, { lean: false });
+        const result = await repository.find({ email });
 
         if (!result) {
             throw new Error("Investor not found");
@@ -54,7 +54,7 @@ export default function makeInvestorService({ repository }: { repository: IRepos
 
     const findById = async (id: InvestorPayload["id"]): Promise<ResponsePayload> => {
 
-        const result = await repository.find({ _id: id }, { lean: false });
+        const result = await repository.find({ _id: id });
 
         if (!result) {
             throw new Error("Investor not found");
@@ -94,7 +94,7 @@ export default function makeInvestorService({ repository }: { repository: IRepos
     }
 
     const updatePassword = async (id: InvestorPayload["id"], oldPassword: InvestorPayload["password"], newPassword: InvestorPayload["password"]): Promise<ResponsePayload> => {
-        const investor = await repository.find({ _id: id }, { lean: false });
+        const investor = await repository.find({ _id: id });
 
         if (!investor) {
             throw new Error("Investor not found");
@@ -122,7 +122,7 @@ export default function makeInvestorService({ repository }: { repository: IRepos
     }
 
     const markDeleted = async (id: InvestorPayload["id"]): Promise<ResponsePayload> => {
-        const investor = await repository.find({ _id: id }, { lean: false });
+        const investor = await repository.find({ _id: id });
 
         if (!investor) {
             throw new NotFound("Investor not found");
@@ -150,7 +150,18 @@ export default function makeInvestorService({ repository }: { repository: IRepos
     }
 
     const login = async ({ email, password }: { email: InvestorPayload["email"], password: InvestorPayload["password"] }): Promise<any> => {
+        if (!email || !password) throw new InvalidCredentialsError("Invalid credentials");
 
+        const foundInvestor = await repository.find({ email });
+
+        if (!foundInvestor) throw Error("Staff not found");
+
+        if (!verfiyPassword(password, foundInvestor.password)) throw Error("Invalid user credentials");
+
+        // perform DTO on `foundStaff` before return;
+        delete foundInvestor.password;
+
+        return foundInvestor;
     }
 
     return Object.freeze({
