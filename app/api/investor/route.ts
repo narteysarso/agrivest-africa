@@ -41,8 +41,6 @@ const staffHandler = async (request: NextRequest) => {
             return NextResponse.json({ message: error.message, error }, { status: error.statusCode });
         }
 
-        console.log(error)
-
         return NextResponse.json({ message: "Error", error }, { status: 500 });
     }
 }

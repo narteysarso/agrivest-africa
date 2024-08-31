@@ -38,40 +38,6 @@ export const validateInvestor = (investorData: unknown): [error: string | null, 
 }
 
 
-export const makeHttpRequest = (request: { body: any, pathname: any, method: any, headers: any } | any) => {
-    let body = request?.body;
-    let pathname = request?.pathname;
-    let method = request?.method;
-    let headers = request?.headers
-
-    console.log({
-        method,
-        pathname,
-        headers,
-        body
-    })
-
-    if (!body || !pathname || !method) {
-        throw makeHttpError({ statusCode: 400, errorMsg: `Bad request` })
-    }
-
-    if (typeof request?.body === 'string') {
-        try {
-            body = JSON.parse(request?.body);
-        } catch (error) {
-            throw makeHttpError({ statusCode: 400, errorMsg: `Bad request. Request must have a valid JSON` })
-        }
-    }
-
-    return Object.freeze({
-        method,
-        pathname,
-        headers,
-        body
-    });
-}
-
-
 export const makeStaffData = (staffData: Document): StaffData => {
     return StaffDataSchema.parse(staffData);
 }

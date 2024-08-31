@@ -13,9 +13,7 @@ const staffHandler = async (request: NextRequest) => {
     try {
 
         const staffInfo: StaffPayload = await request.json();
-
-        console.log(staffInfo);
-
+        
         switch (request.method) {
             case 'POST':
                 const response = await userService.createStaff(staffInfo);
@@ -43,8 +41,6 @@ const staffHandler = async (request: NextRequest) => {
         if (error instanceof HttpError) {
             return NextResponse.json({ message: error.message, error }, { status: error.statusCode });
         }
-
-        console.log(error)
 
         return NextResponse.json({ message: "Error", error }, { status: 500 });
     }

@@ -1,8 +1,8 @@
 import AppConfig from '@/app.config';
 import Staff from '@/database/mongoose/models/Staff';
-import { verfiyPassword } from '@/lib/helpers';
-import { userService } from '@/services';
-import { AuthOptions, User } from "next-auth";
+import { investorService, userService } from '@/services';
+import { AuthType } from '@/types';
+import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -33,13 +33,17 @@ export const authOptions: AuthOptions = {
                     label: "password",
                     type: "password",
                     placeholder: "******"
+                },
+                authType: {
+                    label: "authType",
+                    type: "text"
                 }
             },
             async authorize(credentials, req) {
                 try {
-                    if (!credentials?.email || !credentials?.password) throw Error("Invalid request body");
+                    if (!credentials?.email || !credentials?.password || !credentials.authType) throw Error("Invalid request body");
 
-                    const user = await userService.loginStaff({ ...credentials });
+                    const user = (credentials.authType !== AuthType.STAFF) ? await investorService.login({ ...credentials }) : await userService.loginStaff({ ...credentials });
 
                     if (!user) throw new Error("Invalid credentials")
 
@@ -82,6 +86,6 @@ export const authOptions: AuthOptions = {
         }
     },
     pages: {
-        signIn: AppConfig.routes.pages.signin
+        signIn: AppConfig.routes.pages.staffsignin
     }
 }

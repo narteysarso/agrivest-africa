@@ -1,7 +1,7 @@
 import { default_literals } from './constants/literals';
 
 export const DEFAULT_DATABASE_PROVIDER = "mongoose";
-export const DEFUALT_PASSWORD_LENGTH = 6 ;
+export const DEFUALT_PASSWORD_LENGTH = 6;
 
 const AppConfig = {
     constants: {
@@ -28,6 +28,7 @@ const AppConfig = {
             about: "/about",
             signup: "/signup",
             signin: "/signin",
+            staffsignin: "/staffsignin",
             protected: {
                 admin: {
                     farms: "/admin/farms",

@@ -15,6 +15,7 @@ import MobileNav from './mobile-nav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import AppConfig from '@/app.config';
+import { InvestorRole, StaffRole } from '@/types';
 
 export const Header = async () => {
 
@@ -83,7 +84,7 @@ export const Header = async () => {
         </div>
         <div className="flex justify-end w-full gap-4">
           {
-            session && session.user.role === "admin" ? (
+            session && (session.user.role === StaffRole.ADMIN || session.user.role === StaffRole.STAFF) ? (
               <>
                 <Button variant={"outline"}>
                   <Link href={AppConfig.routes.pages.protected.admin.overview} >
@@ -91,8 +92,8 @@ export const Header = async () => {
                   </Link>
                 </Button>
               </>
-            ) : session?.user.role === "customer" ? (
-              <Button>
+            ) : session && session.user.role === InvestorRole.INVESTOR ? (
+              <Button variant={"outline"}>
                 <Link href={AppConfig.routes.pages.protected.investor.overview} >
                   Dashboard
                 </Link>

@@ -53,6 +53,10 @@ export interface PasswordMananger {
     verfiyPassword(plainText: string, cypher: string): Promise<boolean>
 }
 
+export enum AuthType {
+    STAFF = "staff",
+    INVESTOR = "investor"
+}
 /// Database types
 
 export interface IRepositoryDependency {

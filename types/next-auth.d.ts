@@ -1,4 +1,6 @@
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth"
+import Credentials from 'next-auth/providers/credentials'
+import { AuthType } from '.'
 
 declare module "next-auth" {
     /**
@@ -15,6 +17,15 @@ declare module "next-auth" {
     }
 
     interface User extends DefaultUser {
+        fullname: string
+        firstname: string
+        lastname: string
         role: string
+    }
+
+    interface Credentials {
+        email: string,
+        password: string,
+        authType: AuthType
     }
 }

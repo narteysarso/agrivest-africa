@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { StaffPayloadSchema } from '@/types/services/staff.service'
+import { useState } from 'react'
 
 const FormSchema = z.object({
     firstname: z.string().min(2, {
@@ -30,6 +31,7 @@ const FormSchema = z.object({
 })
 
 export default function StaffForm() {
+    const [errors, setErrors] = useState<string | null>();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -41,10 +43,10 @@ export default function StaffForm() {
     })
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log(data);
+
         const results = StaffPayloadSchema.safeParse(data);
         if (!results.success) {
-            console.log(results.error.issues); //.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), "")
+            setErrors(results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""));
         }
 
         const response = await fetch("/api/staff", {
@@ -56,8 +58,6 @@ export default function StaffForm() {
         });
 
         const result = await response.json();
-
-        console.log(result);
 
     }
 

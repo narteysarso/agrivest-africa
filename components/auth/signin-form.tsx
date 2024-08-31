@@ -21,6 +21,7 @@ import AppConfig from '@/app.config'
 import { GoogleSignInButton } from './authBottons'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { AuthType } from '@/types'
 
 
 const FormSchema = z.object({
@@ -28,9 +29,12 @@ const FormSchema = z.object({
     password: z.string().min(AppConfig.constants.defaultPasswordLength || 6, "message must be at least 8 characters long")
 })
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-export default function LoginForm({className, ...props }: UserAuthFormProps) {
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+    authType: AuthType
+}
+
+export default function LoginForm({ className, authType, ...props }: UserAuthFormProps) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -52,13 +56,20 @@ export default function LoginForm({className, ...props }: UserAuthFormProps) {
             const signInResponse = await signIn("credentials", {
                 email,
                 password,
+                authType,
                 redirect: false
             });
 
             if (signInResponse && signInResponse.error) {
-                setErrors(AppConfig.literals.auth.errors.invalid_credentials);
-            } else {
-                router.push(AppConfig.routes.pages.protected.admin.overview);
+                return setErrors(AppConfig.literals.auth.errors.invalid_credentials);
+            }
+
+            if (authType === AuthType.INVESTOR) {
+                return router.push(AppConfig.routes.pages.protected.investor.overview);
+            }
+
+            if (authType === AuthType.STAFF) {
+                return router.push(AppConfig.routes.pages.protected.admin.overview);
             }
 
         } catch (error: any) {
@@ -70,7 +81,7 @@ export default function LoginForm({className, ...props }: UserAuthFormProps) {
 
     return (
         <div className={cn("grid gap-6", className)} {...props}>
-        
+
             <Form  {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
 
