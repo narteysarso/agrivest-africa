@@ -49,6 +49,7 @@ import {
     TooltipTrigger,
 
 } from "@/components/ui/tooltip"
+import AddFarmDialog from '@/components/admin/add-farm-dailog'
 
 export default function Page() {
     return (
@@ -96,12 +97,7 @@ export default function Page() {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
 
-                                <Button size="sm" className="h-8 gap-1">
-                                    <PlusCircle className="h-3.5 w-3.5" />
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Add Farm
-                                    </span>
-                                </Button>
+                                <AddFarmDialog/>
                             </div>
                         </div>
                         <TabsContent value="all">
