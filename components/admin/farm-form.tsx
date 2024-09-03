@@ -50,7 +50,7 @@ function FarmForm() {
                     <div className="grid gap-3">
                         <FormField control={form.control} name="image" render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Image</FormLabel>
                                 <FormControl>
                                     <>
                                         <Input type="file" hidden {...field} placeholder="Choose an image" />
