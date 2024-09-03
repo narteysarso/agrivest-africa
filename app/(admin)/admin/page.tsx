@@ -13,7 +13,6 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { CalendarDateRangePicker } from "../../../components/admin/date-range-picker"
 import { Overview } from "../../../components/admin/overview"
 import { RecentSales } from "../../../components/admin/recent-sales"
 import OrdersList from '../../../components/admin/orders-list'
@@ -26,29 +25,30 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
     return (
-        <div className="container mx-auto flex-1 space-y-4 p-8 pt-6">
+        <div className="container mx-auto flex-1 space-y-4 md:p-8 pt-6 p-0">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-                <div className="flex items-center space-x-2">
-                    <CalendarDateRangePicker />
-                    <Button>Download</Button>
-                </div>
-            </div>
-            <Tabs defaultValue="overview" className="space-y-4">
-                <div className='flex justify-between'>
-                    <TabsList>
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="orders" >
-                            Orders
-                        </TabsTrigger>
-                        <TabsTrigger value="analytics" >
-                            Analytics
-                        </TabsTrigger>
 
-                    </TabsList>
-                    <Search />
+            </div>
+            <Tabs defaultValue="overview" className="">
+                <div className='flex justify-between flex-wrap '>
+                    <div className='order-2 md:order-1 m-2'>
+                        <TabsList>
+                            <TabsTrigger value="overview">Overview</TabsTrigger>
+                            <TabsTrigger value="orders" >
+                                Orders
+                            </TabsTrigger>
+                            <TabsTrigger value="analytics" >
+                                Analytics
+                            </TabsTrigger>
+
+                        </TabsList>
+                    </div>
+                    <div className='order-1 md:order-2 m-2'>
+                        <Search />
+                    </div>
                 </div>
-                <TabsContent value="overview" className="space-y-4">
+                <TabsContent value="overview" className="space-y-0">
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -152,12 +152,12 @@ export default function DashboardPage() {
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    <div className="grid md:grid-cols-2 md:gap-4 lg:grid-cols-7">
                         <Card className="col-span-4">
                             <CardHeader>
                                 <CardTitle>Overview</CardTitle>
                             </CardHeader>
-                            <CardContent className="pl-2">
+                            <CardContent className="">
                                 <Overview />
                             </CardContent>
                         </Card>

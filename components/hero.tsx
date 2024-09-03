@@ -24,7 +24,7 @@ export const Hero = () => (
               ever.
             </p>
           </div>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 flex-wrap">
             <Link href={AppConfig.routes.pages.signin}>
               <Button size="lg" className="gap-4" variant="outline">
                 Invest now <MoveRight className="w-4 h-4" />
