@@ -14,20 +14,21 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { StaffPayloadSchema } from '@/types/services/staff.service'
 import { useState } from 'react'
+import AppConfig from '@/app.config'
+import { StaffRole } from '@/types'
 
 const FormSchema = z.object({
-    firstname: z.string().min(2, {
+    firstname: z.string().min(AppConfig.constants.minNameLength, {
         message: "first name must be at least 2 characters.",
     }),
-    lastname: z.string().min(2, {
+    lastname: z.string().min(AppConfig.constants.minNameLength, {
         message: "last name must be at least 2 characters.",
     }),
     email: z.string().email(),
-    role: z.string()
+    role: z.nativeEnum(StaffRole)
 })
 
 export default function StaffForm() {
@@ -38,7 +39,7 @@ export default function StaffForm() {
             firstname: "",
             lastname: "",
             email: "",
-            role: "staff"
+            role: StaffRole.STAFF
         },
     })
 
@@ -119,7 +120,7 @@ export default function StaffForm() {
                                 >
                                     <FormItem className="flex items-center space-x-3 space-y-0">
                                         <FormControl>
-                                            <RadioGroupItem value="admin" />
+                                            <RadioGroupItem value={StaffRole.ADMIN} />
                                         </FormControl>
                                         <FormLabel className="font-normal">
                                             Admin
@@ -127,7 +128,7 @@ export default function StaffForm() {
                                     </FormItem>
                                     <FormItem className="flex items-center space-x-3 space-y-0">
                                         <FormControl>
-                                            <RadioGroupItem value="staff" />
+                                            <RadioGroupItem value={StaffRole.STAFF} />
                                         </FormControl>
                                         <FormLabel className="font-normal">
                                             Staff

@@ -57,6 +57,12 @@ export enum AuthType {
     STAFF = "staff",
     INVESTOR = "investor"
 }
+
+export enum FarmType {
+    MAIZE = "maize",
+    RICE = "rice"
+}
+
 /// Database types
 
 export interface IRepositoryDependency {

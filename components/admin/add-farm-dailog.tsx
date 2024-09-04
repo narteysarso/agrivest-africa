@@ -20,7 +20,7 @@ function AddFarmDialog() {
             <AlertDialogTrigger asChild>
                 <Button className='gap-4'> <Plus /> New Farm</Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className='sm:p-2 h-full'>
                 <AlertDialogHeader>
 
                     <AlertDialogTitle className='flex items-center justify-between'>

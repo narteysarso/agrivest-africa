@@ -1,8 +1,7 @@
 "use client"
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
     Select,
     SelectContent,
@@ -11,27 +10,30 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { Bird, Rabbit, Turtle } from 'lucide-react'
+import { Vegan, Wheat } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import Image from 'next/image'
+import AppConfig from '@/app.config'
+import { FarmType } from '@/types'
 import { Button } from '../ui/button'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-enum FarmType {
-    MAIZE = "maize",
-    RICE = "rice"
-}
 
 const FormSchema = z.object({
     image: z.string().trim().optional(),
-    name: z.string().trim().min(5),
-    description: z.string().trim().max(150),
+    name: z.string().trim().min(AppConfig.constants.minFarmNameLength),
+    description: z.string().trim().min(AppConfig.constants.minFarmDescriptionLength).max(AppConfig.constants.maxFarmDescriptionLength),
     type: z.nativeEnum(FarmType),
-    availableArcherage: z.number().min(0).step(0.01)
+    availableArcherage: z.number().min(AppConfig.constants.minimumFarmArcherage).step(AppConfig.constants.farmArcherageIncremental)
 })
 function FarmForm() {
-    const fileRef = useRef();
+    const [imagePreview, setImagePreview] = useState<string>(AppConfig.resource.images.defaultProfileImage);
+    const [errors, setErrors] = useState<string | null>(null)
+
     const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
         defaultValues: {
             image: "",
             name: "",
@@ -40,10 +42,29 @@ function FarmForm() {
             availableArcherage: 0
         }
     })
+
+    const onSubmit = (data: z.infer<typeof FormSchema>) => {
+        console.log(data);
+    }
+
+    const handleImageChange = (e: React.BaseSyntheticEvent) => {
+        try {
+            const file = e.target.files[0];
+            if (!file) throw new Error("Failed to select file. Choose another file");
+            console.log(file)
+            const uri = URL.createObjectURL(file);
+            setImagePreview(uri);
+        } catch (error) {
+            console.log(error)
+            setImagePreview(AppConfig.resource.images.defaultProfileImage);
+            setErrors("Failed to set image");
+        }
+
+    }
     return (
         <Form {...form}>
-            <form className="grid w-full items-start gap-6 overflow-auto p-4 pt-0">
-                <fieldset className="grid gap-6 rounded-lg border p-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full items-start md:gap-6 overflow-auto md:p-4 pt-0">
+                <fieldset className="grid gap-6 rounded-lg border sm:p-4">
                     <legend className="-ml-1 px-1 text-sm font-medium">
                         Field Details
                     </legend>
@@ -51,10 +72,21 @@ function FarmForm() {
                         <FormField control={form.control} name="image" render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Image</FormLabel>
-                                <FormControl>
-                                    <>
+                                <FormControl onChange={handleImageChange}>
+                                    <div className="grid grid-col grid-cols-1 gap-4">
+                                        <div className='w-full flex justify-center'>
+                                            <Image
+                                                src={imagePreview}
+                                                width={250} height={250}
+                                                alt="Image preview"
+                                                placeholder={"blur"}
+                                                blurDataURL={AppConfig.resource.images.defaultProfileImage}
+                                                loading={"lazy"}
+
+                                            />
+                                        </div>
                                         <Input type="file" hidden {...field} placeholder="Choose an image" />
-                                    </>
+                                    </div>
                                 </FormControl>
                             </FormItem>
                         )} />
@@ -66,6 +98,7 @@ function FarmForm() {
                                 <FormControl>
                                     <Input type="text" {...field} placeholder="Give your farm a name" />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
                     </div>
@@ -78,58 +111,42 @@ function FarmForm() {
                                     <FormLabel>Type</FormLabel>
                                     <FormControl>
                                         <Select {...field}>
+
                                             <SelectTrigger
                                                 id="model"
                                                 className="items-start [&_[data-description]]:hidden"
                                             >
-                                                <SelectValue placeholder="Select a model" />
+                                                <SelectValue placeholder="Select farm type" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="genesis">
+                                                <SelectItem value={FarmType.MAIZE}>
                                                     <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <Rabbit className="size-5" />
+                                                        <Wheat className="size-5" />
                                                         <div className="grid gap-0.5">
                                                             <p>
-                                                                Neural{" "}
+
                                                                 <span className="font-medium text-foreground">
-                                                                    Genesis
+                                                                    {`${FarmType.MAIZE.charAt(0).toUpperCase()}${FarmType.MAIZE.substring(1)}`}
                                                                 </span>
                                                             </p>
                                                             <p className="text-xs" data-description>
-                                                                Our fastest model for general use cases.
+                                                                {AppConfig.literals.maize_farm_description}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </SelectItem>
                                                 <SelectItem value="explorer">
                                                     <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <Bird className="size-5" />
+                                                        <Vegan className="size-5" />
                                                         <div className="grid gap-0.5">
                                                             <p>
-                                                                Neural{" "}
+
                                                                 <span className="font-medium text-foreground">
-                                                                    Explorer
+                                                                    {`${FarmType.RICE.charAt(0).toUpperCase()}${FarmType.RICE.substring(1)}`}
                                                                 </span>
                                                             </p>
                                                             <p className="text-xs" data-description>
-                                                                Performance and speed for efficiency.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </SelectItem>
-                                                <SelectItem value="quantum">
-                                                    <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <Turtle className="size-5" />
-                                                        <div className="grid gap-0.5">
-                                                            <p>
-                                                                Neural{" "}
-                                                                <span className="font-medium text-foreground">
-                                                                    Quantum
-                                                                </span>
-                                                            </p>
-                                                            <p className="text-xs" data-description>
-                                                                The most powerful model for complex
-                                                                computations.
+                                                                {AppConfig.literals.rice_farm_description}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -137,6 +154,7 @@ function FarmForm() {
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -149,8 +167,9 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Available Archerage</FormLabel>
                                     <FormControl>
-                                        <Input type="text" {...field} placeholder="Give your farm a name" />
+                                        <Input type="number" {...field} placeholder="Give your farm a name" />
                                     </FormControl>
+                                    <FormMessage />
                                 </FormItem>
                             )} />
                     </div>
@@ -168,10 +187,15 @@ function FarmForm() {
                                 <FormControl>
                                     <Textarea placeholder="Describe your farm (150)" maxLength={150} {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )} />
                     </div>
                 </fieldset>
+                <div className='grid grid-cols-2 gap-4 pt-10'>
+                    <Button type="reset" variant={"destructive"}>Reset</Button>
+                    <Button type="submit">Submit</Button>
+                </div>
             </form>
         </Form>
     )

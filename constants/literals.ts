@@ -7,5 +7,7 @@ export const default_literals = {
     },
     investor: {
         registration_default_failed: "Registration Failed"
-    }
+    },
+    maize_farm_description: "Maize farm",
+    rice_farm_description: "Rice farm",
 }

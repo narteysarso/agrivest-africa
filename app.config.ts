@@ -2,10 +2,24 @@ import { default_literals } from './constants/literals';
 
 export const DEFAULT_DATABASE_PROVIDER = "mongoose";
 export const DEFUALT_PASSWORD_LENGTH = 6;
+export const MINIMUM_FARM_ARCHERAGE = 1;
+export const FARM_ARCHERAGE_INCREMENTAL = 1;
+export const MIN_FARM_NAME_LENGTH = 5;
+export const MAX_FARM_DESCRIPTIION_LENGTH = 150;
+export const MIN_FARM_DESCRIPTIION_LENGTH = 20;
+export const MIN_NAME_LENGHT = 2;
 
 const AppConfig = {
     constants: {
         defaultPasswordLength: DEFUALT_PASSWORD_LENGTH,
+        minimumFarmArcherage: MINIMUM_FARM_ARCHERAGE,
+        farmArcherageIncremental: FARM_ARCHERAGE_INCREMENTAL,
+        maxFarmDescriptionLength: MAX_FARM_DESCRIPTIION_LENGTH,
+        minFarmDescriptionLength: MIN_FARM_DESCRIPTIION_LENGTH,
+        minFarmNameLength: MIN_FARM_NAME_LENGTH,
+        minNameLength: MIN_NAME_LENGHT
+
+
     },
     resource: {
         images: {
