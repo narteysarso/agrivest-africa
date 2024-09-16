@@ -53,6 +53,11 @@ export interface PasswordMananger {
     verfiyPassword(plainText: string, cypher: string): Promise<boolean>
 }
 
+export enum PublishStatuses {
+    DRAFT = "draft",
+    PUBLISHED = "published"
+}
+
 export enum AuthType {
     STAFF = "staff",
     INVESTOR = "investor"
@@ -60,7 +65,10 @@ export enum AuthType {
 
 export enum FarmType {
     MAIZE = "maize",
-    RICE = "rice"
+    RICE = "rice",
+    GROUNDNUT = "groundnut",
+    BEANS = "beans",
+    SOYABEANS = "soyabeans"
 }
 
 /// Database types

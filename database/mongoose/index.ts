@@ -4,7 +4,9 @@ import { InvestorPayload } from '@/types/services/investor.service';
 import { StaffPayload } from '@/types/services/staff.service';
 import { Document, FilterQuery, QueryOptions } from 'mongoose';
 import Investor, { InvestorDocument } from './models/Investor';
+import mongoose from 'mongoose';
 
+mongoose.connect(process.env.MONGODB_URI!);
 
 const StaffRepository = ({ passwordManager }: IRepositoryDependency): IRepository => {
     async function create(input: StaffPayload): Promise<Document> {

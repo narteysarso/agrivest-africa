@@ -1,6 +1,5 @@
 import { InvestorInput } from '@/types';
 import mongoose, { Schema } from "mongoose";
-import { string } from 'zod';
 
 mongoose.connect(process.env.MONGODB_URI!);
 

@@ -3,23 +3,27 @@ import { default_literals } from './constants/literals';
 export const DEFAULT_DATABASE_PROVIDER = "mongoose";
 export const DEFUALT_PASSWORD_LENGTH = 6;
 export const MINIMUM_FARM_ARCHERAGE = 1;
-export const FARM_ARCHERAGE_INCREMENTAL = 1;
+export const FARM_ARCHERAGE_INCREMENTAL = 0.01;
 export const MIN_FARM_NAME_LENGTH = 5;
 export const MAX_FARM_DESCRIPTIION_LENGTH = 150;
 export const MIN_FARM_DESCRIPTIION_LENGTH = 20;
 export const MIN_NAME_LENGHT = 2;
+export const MINIMUM_UNIT_COST = 1;
+export const MINIMUM_FARM_UNIT = 1;
+export const MINIMUM_FARM_INVESTMENT_DURATION_IN_DAYS = 1;
 
 const AppConfig = {
     constants: {
         defaultPasswordLength: DEFUALT_PASSWORD_LENGTH,
         minimumFarmArcherage: MINIMUM_FARM_ARCHERAGE,
+        minimumFarmUnits: MINIMUM_FARM_UNIT,
         farmArcherageIncremental: FARM_ARCHERAGE_INCREMENTAL,
         maxFarmDescriptionLength: MAX_FARM_DESCRIPTIION_LENGTH,
         minFarmDescriptionLength: MIN_FARM_DESCRIPTIION_LENGTH,
         minFarmNameLength: MIN_FARM_NAME_LENGTH,
-        minNameLength: MIN_NAME_LENGHT
-
-
+        minNameLength: MIN_NAME_LENGHT,
+        minimumUnitCost: MINIMUM_UNIT_COST,
+        defaultFarmInvestmentMinimumDurationInDays: MINIMUM_FARM_INVESTMENT_DURATION_IN_DAYS
     },
     resource: {
         images: {
