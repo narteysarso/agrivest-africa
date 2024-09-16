@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { BadgeCent, BadgeDollarSign, BadgeEuro, Bean, CalendarIcon, Vegan, Wheat } from 'lucide-react'
+import { BadgeCent, BadgeDollarSign, BadgeEuro, Bean, CalendarDays, CalendarDaysIcon, CalendarIcon, Vegan, Wheat } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -261,7 +261,7 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Currency</FormLabel>
                                     <FormControl>
-                                        <Select {...field}>
+                                        <Select {...field} defaultValue={Currencies.USD}>
                                             <SelectTrigger
                                                 id="model"
                                                 className="items-start [&_[data-description]]:hidden"
@@ -348,7 +348,7 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Duration Unit</FormLabel>
                                     <FormControl>
-                                        <Select {...field}>
+                                        <Select {...field} defaultValue={InvestmentDurationUnits.MONTHS}>
                                             <SelectTrigger
                                                 id="model"
                                                 className="items-start [&_[data-description]]:hidden"
@@ -358,12 +358,12 @@ function FarmForm() {
                                             <SelectContent>
                                                 <SelectItem value={InvestmentDurationUnits.DAYS}>
                                                     <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <BadgeDollarSign className="size-5" />
+                                                        <CalendarDaysIcon className="size-5" />
                                                         <div className="grid gap-0.5">
                                                             <p>
 
                                                                 <span className="font-medium text-foreground">
-                                                                    {InvestmentDurationUnits.DAYS}
+                                                                    {`${InvestmentDurationUnits.DAYS.charAt(0).toUpperCase()}${InvestmentDurationUnits.DAYS?.substring(1)}`}
                                                                 </span>
                                                             </p>
 
@@ -372,12 +372,12 @@ function FarmForm() {
                                                 </SelectItem>
                                                 <SelectItem value={InvestmentDurationUnits.MONTHS}>
                                                     <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <BadgeEuro className="size-5" />
+                                                        <CalendarDaysIcon className="size-5" />
                                                         <div className="grid gap-0.5">
                                                             <p>
 
                                                                 <span className="font-medium text-foreground">
-                                                                    {InvestmentDurationUnits.MONTHS}
+                                                                    {`${InvestmentDurationUnits.MONTHS.charAt(0).toUpperCase()}${InvestmentDurationUnits.MONTHS?.substring(1)}`}
                                                                 </span>
                                                             </p>
 
@@ -386,12 +386,12 @@ function FarmForm() {
                                                 </SelectItem>
                                                 <SelectItem value={InvestmentDurationUnits.YEARS}>
                                                     <div className="flex items-start gap-3 text-muted-foreground">
-                                                        <BadgeCent className="size-5" />
+                                                        <CalendarDaysIcon className="size-5" />
                                                         <div className="grid gap-0.5">
                                                             <p>
 
                                                                 <span className="font-medium text-foreground">
-                                                                    {InvestmentDurationUnits.YEARS}
+                                                                    {`${InvestmentDurationUnits.YEARS.charAt(0).toUpperCase()}${InvestmentDurationUnits.YEARS?.substring(1)}`}
                                                                 </span>
                                                             </p>
 
