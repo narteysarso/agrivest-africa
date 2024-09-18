@@ -19,6 +19,7 @@ import { StaffPayloadSchema } from '@/types/services/staff.service'
 import { useState } from 'react'
 import AppConfig from '@/app.config'
 import { StaffRole } from '@/types'
+import { Loader2 } from 'lucide-react'
 
 const FormSchema = z.object({
     firstname: z.string().min(AppConfig.constants.minNameLength, {
@@ -33,6 +34,7 @@ const FormSchema = z.object({
 
 export default function StaffForm() {
     const [errors, setErrors] = useState<string | null>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -45,20 +47,30 @@ export default function StaffForm() {
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
 
-        const results = StaffPayloadSchema.safeParse(data);
-        if (!results.success) {
-            setErrors(results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""));
+        try {
+            setIsLoading(true);
+            const results = StaffPayloadSchema.safeParse(data);
+            if (!results.success) {
+                throw Error(results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""));
+            }
+
+            const response = await fetch(AppConfig.routes.api.staff, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(results.data)
+            });
+
+            if (!response.ok) throw new Error("Failed to create staff")
+
+            const result = await response.json();
+        } catch (error: any) {
+            setErrors(error?.message);
+        } finally {
+            setIsLoading(false)
         }
 
-        const response = await fetch("/api/staff", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(results.data)
-        });
-
-        const result = await response.json();
 
     }
 
@@ -141,8 +153,11 @@ export default function StaffForm() {
                     )}
                 />
                 <div className='grid grid-cols-2 gap-4 pt-10'>
-                    <Button type="reset" variant={"destructive"}>Reset</Button>
-                    <Button type="submit">Submit</Button>
+                    <Button type="reset" disabled={isLoading} variant={"destructive"}>Reset</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Submit
+                    </Button>
                 </div>
             </form>
         </Form>

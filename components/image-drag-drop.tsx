@@ -3,8 +3,9 @@
 import React, { useState, useCallback } from 'react'
 import { Upload, X } from 'lucide-react'
 import Image from 'next/image'
-import { FormControl, FormField, FormItem, FormLabel } from './ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
 import { UseFormReturn } from 'react-hook-form'
+import { Input } from './ui/input'
 
 export default function ImageDragDrop({ form }: { form: UseFormReturn<any> }) {
     const [image, setImage] = useState<File | null>(null)
@@ -62,7 +63,7 @@ export default function ImageDragDrop({ form }: { form: UseFormReturn<any> }) {
                 <FormField control={form.control} name="image" render={({ field }) => (
                     <FormItem>
                         <FormLabel>Image</FormLabel>
-                        <FormControl onChange={handleFileChange}>
+                        <FormControl >
                             <>
                                 {image ? (
                                     <div className="relative">
@@ -89,16 +90,21 @@ export default function ImageDragDrop({ form }: { form: UseFormReturn<any> }) {
                                         </p>
                                     </div>
                                 )}
-                                <input
+                                <Input
                                     {...field}
                                     type="file"
                                     accept="image/*"
-                                    onChange={handleFileChange}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        handleFileChange(e)
+                                    }}
                                     className="hidden"
                                     id="image"
+
                                 />
                             </>
                         </FormControl>
+                        <FormMessage />
                     </FormItem>
                 )} />
             </div>

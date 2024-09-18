@@ -16,7 +16,7 @@ const AppConfig = {
     constants: {
         defaultPasswordLength: DEFUALT_PASSWORD_LENGTH,
         minimumFarmArcherage: MINIMUM_FARM_ARCHERAGE,
-        minimumFarmUnits: MINIMUM_FARM_UNIT,
+        minimumFarmUnits: 1,
         farmArcherageIncremental: FARM_ARCHERAGE_INCREMENTAL,
         maxFarmDescriptionLength: MAX_FARM_DESCRIPTIION_LENGTH,
         minFarmDescriptionLength: MIN_FARM_DESCRIPTIION_LENGTH,
@@ -33,7 +33,8 @@ const AppConfig = {
     routes: {
         api: {
             staff: '/api/staff',
-            investor: '/api/investor'
+            investor: '/api/investor',
+            farm: '/api/farm'
         },
         pages: {
             home: '/',

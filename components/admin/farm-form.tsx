@@ -23,19 +23,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
-
-export enum Currencies {
-    USD = "USD",
-    GHS = "GHS",
-    EUR = "EUR"
-}
-
-enum InvestmentDurationUnits {
-    DAYS = "days",
-    MONTHS = "months",
-    YEARS = "years"
-};
-
+import { Currencies, FarmPayloadSchema, InvestmentDurationUnits } from '@/types/services/farm.service'
 
 const investmentDurationInDaysMultiplier = {
     [InvestmentDurationUnits.DAYS]: 1,
@@ -45,10 +33,10 @@ const investmentDurationInDaysMultiplier = {
 
 
 export const FarmFormSchema = z.object({
-    imageUrl: z.string().trim().optional(),
+    image: z.string().optional(),
     name: z.string().trim().min(AppConfig.constants.minFarmNameLength),
     description: z.string().trim().min(AppConfig.constants.minFarmDescriptionLength).max(AppConfig.constants.maxFarmDescriptionLength),
-    investmentDuration: z.number().min(AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays),
+    investmentDuration: z.string().min(AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays).transform((val) => parseFloat(val)),
     investmentDurationUnit: z.nativeEnum(InvestmentDurationUnits),
     investmentDeadline: z.date().optional(),
     currency: z.nativeEnum(Currencies),
@@ -57,33 +45,92 @@ export const FarmFormSchema = z.object({
         to: z.date(),
     }).optional(),
     type: z.nativeEnum(FarmType),
-    unitCost: z.number().min(AppConfig.constants.minimumUnitCost),
-    archerPerUnit: z.number().min(AppConfig.constants.minimumFarmArcherage).step(AppConfig.constants.farmArcherageIncremental),
-    totalUnits: z.number().min(AppConfig.constants.minimumFarmUnits).step(AppConfig.constants.farmArcherageIncremental)
+    unitCost: z.string().min(AppConfig.constants.minimumUnitCost).transform((val) => parseFloat(val)),
+    archerPerUnit: z.string().min(AppConfig.constants.minimumFarmArcherage).transform((val) => parseFloat(val)),
+    totalUnits: z.string().min(AppConfig.constants.minimumFarmUnits).transform((val) => parseFloat(val))
 })
 
 
 
-function FarmForm() {
+export default function FarmForm() {
     const form = useForm<z.infer<typeof FarmFormSchema>>({
         resolver: zodResolver(FarmFormSchema),
         defaultValues: {
-            imageUrl: "",
+            image: undefined,
             name: "",
             description: "",
-            investmentDuration: AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays,
-            investmentDurationUnit: undefined,
-            type: undefined,
-            currency: undefined,
+            investmentDuration: undefined,
+            investmentDurationUnit: InvestmentDurationUnits.DAYS,
+            type: FarmType.MAIZE,
+            currency: Currencies.USD,
             season: undefined,
-            archerPerUnit: AppConfig.constants.minimumFarmArcherage,
-            totalUnits: AppConfig.constants.minimumFarmUnits,
-            unitCost: AppConfig.constants.minimumUnitCost
+            archerPerUnit: undefined,
+            totalUnits: undefined,
+            unitCost: undefined
         }
     })
+    const [errors, setErrors] = useState<string | null>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const onSubmit = (data: z.infer<typeof FarmFormSchema>) => {
-        console.log(data);
+    const onSubmit = async (data: z.infer<typeof FarmFormSchema>) => {
+
+        try {
+            const {
+                image,
+                name,
+                description,
+                investmentDuration,
+                investmentDurationUnit,
+                investmentDeadline,
+                currency,
+                season,
+                type,
+                unitCost,
+                archerPerUnit,
+                totalUnits,
+            } = data;
+
+
+            const imageUrl = (!!image) ? URL.createObjectURL((image as unknown) as MediaSource) : undefined;
+
+            const results = FarmPayloadSchema.safeParse({
+                imageUrl,
+                name,
+                description,
+                investmentDuration: investmentDuration * investmentDurationInDaysMultiplier[investmentDurationUnit],
+                investmentDeadline,
+                currency,
+                season,
+                type,
+                unitCost,
+                archerPerUnit,
+                totalUnits,
+            });
+
+            if (!results.success) {
+                throw new Error(results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""));
+            }
+
+            const response = await fetch(AppConfig.routes.api.farm, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(results.data)
+            });
+
+            if (!response.ok) {
+                throw new Error("Farm creation failed");
+            }
+
+            await response.json();
+
+        } catch (error: any) {
+            setErrors(error?.message);
+        } finally {
+            setIsLoading(false);
+        }
+
     }
     return (
         <Form {...form}>
@@ -114,7 +161,7 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Type</FormLabel>
                                     <FormControl>
-                                        <Select {...field}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} >
 
                                             <SelectTrigger
                                                 id="model"
@@ -216,10 +263,10 @@ function FarmForm() {
                             control={form.control}
                             name="totalUnits"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem >
                                     <FormLabel>Total Units</FormLabel>
                                     <FormControl>
-                                        <Input type="number" min={AppConfig.constants.minimumFarmArcherage} {...field} placeholder="Total farm units to issue" />
+                                        <Input type="number" min={AppConfig.constants.minimumFarmUnits} {...field} placeholder="Total farm units to issue" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -261,7 +308,7 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Currency</FormLabel>
                                     <FormControl>
-                                        <Select {...field} defaultValue={Currencies.USD}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger
                                                 id="model"
                                                 className="items-start [&_[data-description]]:hidden"
@@ -348,7 +395,7 @@ function FarmForm() {
                                 <FormItem>
                                     <FormLabel>Duration Unit</FormLabel>
                                     <FormControl>
-                                        <Select {...field} defaultValue={InvestmentDurationUnits.MONTHS}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} >
                                             <SelectTrigger
                                                 id="model"
                                                 className="items-start [&_[data-description]]:hidden"
@@ -530,5 +577,3 @@ function FarmForm() {
         </Form>
     )
 }
-
-export default FarmForm
