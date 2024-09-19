@@ -1,16 +1,22 @@
 import Staff, { StaffDocument } from '@/database/mongoose/models/Staff';
-import { IRepository, IRepositoryDependency, PasswordMananger, RepositoryFactory, } from '@/types';
+import { IFarmRespository, IRepository, IRepositoryDependency, PasswordMananger, RepositoryFactory, } from '@/types';
 import { InvestorPayload } from '@/types/services/investor.service';
 import { StaffPayload } from '@/types/services/staff.service';
 import { Document, FilterQuery, QueryOptions } from 'mongoose';
 import Investor, { InvestorDocument } from './models/Investor';
 import mongoose from 'mongoose';
+import { FarmPayload } from '@/types/services/farm.service';
+import Farm from './models/Farm';
 
 mongoose.connect(process.env.MONGODB_URI!);
 
-const StaffRepository = ({ passwordManager }: IRepositoryDependency): IRepository => {
+const StaffRepository = (dependencies?: IRepositoryDependency): IRepository => {
+    if (!dependencies || !(dependencies?.passwordManager)) {
+        throw new Error("Password manager dependency required")
+    };
+
     async function create(input: StaffPayload): Promise<Document> {
-        const hashedPassword = (input.password) ? await passwordManager.hashPassword(input.password!) : null;
+        const hashedPassword = (input.password) ? await dependencies?.passwordManager.hashPassword(input.password!) : null;
 
         return Staff.create({ ...input, password: hashedPassword });
     }
@@ -48,9 +54,46 @@ const StaffRepository = ({ passwordManager }: IRepositoryDependency): IRepositor
     }
 }
 
-const InvestorRepository = ({ passwordManager }: IRepositoryDependency): IRepository => {
+const FarmRepository = (d?: IRepositoryDependency): IFarmRespository => {
+    async function create(input: FarmPayload): Promise<Document> {
+
+        const farm = await Farm.create({ ...input });
+
+        return farm;
+    }
+
+
+    async function find(query: FilterQuery<FarmPayload>, options: QueryOptions = { lean: true }): Promise<Document | null> {
+        return Farm.findOne(query, null, options);
+    }
+
+    async function findById(id: FarmPayload["id"]): Promise<Document | null> {
+        return Farm.findById(id,);
+    }
+
+    async function deleteAll() {
+        return Farm.deleteMany({});
+    }
+
+    async function update(query: FilterQuery<FarmPayload>, updatedata: FarmPayload): Promise<Document | null> {
+        return Staff.findOneAndUpdate(query, updatedata, { new: true });
+    }
+
+
+    return Object.freeze({
+        create,
+        find,
+        findById,
+        update,
+        deleteAll
+    });
+}
+
+const InvestorRepository = (dependencies?: IRepositoryDependency): IRepository => {
+    if (!dependencies || !(dependencies.passwordManager)) throw new Error("Password manager dependency required");
+
     async function create(input: InvestorPayload): Promise<Document> {
-        const hashedPassword = (input.password) ? await passwordManager.hashPassword(input.password!) : null;
+        const hashedPassword = (input.password) ? await dependencies?.passwordManager.hashPassword(input.password!) : null;
 
         return Investor.create({ ...input, password: hashedPassword });
     }
@@ -63,7 +106,7 @@ const InvestorRepository = ({ passwordManager }: IRepositoryDependency): IReposi
         }
 
         /// Todo: return jwt token;
-        return passwordManager.verfiyPassword(password, user.password);
+        return dependencies?.passwordManager.verfiyPassword(password, user.password) || false;
     }
 
     async function find(query: FilterQuery<InvestorDocument>, options: QueryOptions = { lean: true }): Promise<InvestorDocument | null> {
@@ -89,12 +132,13 @@ const InvestorRepository = ({ passwordManager }: IRepositoryDependency): IReposi
 }
 
 
-const makeMongooseRepo: RepositoryFactory = ({ passwordManager }: IRepositoryDependency, repository: string): IRepository => {
+const makeMongooseRepo: RepositoryFactory = (repository: string, repositoryDependency?: IRepositoryDependency): IRepository => {
 
 
-    const Repositories: { [key: string]: (d: IRepositoryDependency) => IRepository } = {
+    const Repositories: { [key: string]: (d?: IRepositoryDependency) => IRepository } = {
         "staff": StaffRepository,
-        "investor": InvestorRepository
+        "investor": InvestorRepository,
+        "farm": FarmRepository
     }
 
     if (!Repositories[repository]) {
@@ -102,7 +146,7 @@ const makeMongooseRepo: RepositoryFactory = ({ passwordManager }: IRepositoryDep
     }
 
 
-    return Repositories[repository]({ passwordManager });
+    return Repositories[repository](repositoryDependency);
 
 
 }

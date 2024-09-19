@@ -1,7 +1,5 @@
 import AppConfig from '@/app.config';
 import { z } from 'zod';
-import { FarmType, PublishStatuses } from '..';
-import { ResponsePayload } from '.';
 
 export enum Currencies {
     USD = "USD",
@@ -15,6 +13,18 @@ export enum InvestmentDurationUnits {
     YEARS = "years"
 };
 
+export enum PublishStatuses {
+    DRAFT = "draft",
+    PUBLISHED = "published"
+}
+
+export enum FarmType {
+    MAIZE = "maize",
+    RICE = "rice",
+    GROUNDNUT = "groundnut",
+    BEANS = "beans",
+    SOYABEANS = "soyabeans"
+}
 
 export const FarmData = z.object({
     id: z.string().optional(),
@@ -37,7 +47,7 @@ export const FarmData = z.object({
     deletedAt: z.date().optional(),
     createdAt: z.date().optional(),
     updatedAt: z.date().optional(),
-})
+});
 
 export const FarmPayloadSchema = z.object({
     id: z.string().optional(),
@@ -61,11 +71,13 @@ export const FarmPayloadSchema = z.object({
 
 export interface FarmPayload extends z.infer<typeof FarmPayloadSchema> { }
 
+export interface Farm extends z.infer<typeof FarmData> { }
 
 export interface IFarmService {
-    create(input: FarmPayload): Promise<ResponsePayload>;
-    findById(id: FarmPayload["id"]): Promise<ResponsePayload>;
-    update(id: FarmPayload["id"], newDetails: FarmPayload): Promise<ResponsePayload>;
-    publishStatus(id: FarmPayload["id"], newPublisState: FarmPayload["publishStatus"]): Promise<ResponsePayload>;
-    markdeleted(id: FarmPayload["id"]): Promise<ResponsePayload>;
+    create(input: FarmPayload): Promise<boolean>;
+    findAll(limit: number, offset: number, size: number): Promise<Farm[]>;
+    findById(id: FarmPayload["id"]): Promise<Farm | null>;
+    update(id: FarmPayload["id"], newDetails: FarmPayload): Promise<boolean>;
+    publishStatus(id: FarmPayload["id"], newPublisState: FarmPayload["publishStatus"]): Promise<boolean>;
+    markdeleted(id: FarmPayload["id"]): Promise<boolean>;
 }

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { StaffPayload } from './services/staff.service';
 import mongoose from 'mongoose';
 import { InvestorPayload } from './services/investor.service';
+import { FarmPayload } from './services/farm.service';
 
 export type NavigationItemsType = {
     title: string,
@@ -53,23 +54,13 @@ export interface PasswordMananger {
     verfiyPassword(plainText: string, cypher: string): Promise<boolean>
 }
 
-export enum PublishStatuses {
-    DRAFT = "draft",
-    PUBLISHED = "published"
-}
+
 
 export enum AuthType {
     STAFF = "staff",
     INVESTOR = "investor"
 }
 
-export enum FarmType {
-    MAIZE = "maize",
-    RICE = "rice",
-    GROUNDNUT = "groundnut",
-    BEANS = "beans",
-    SOYABEANS = "soyabeans"
-}
 
 /// Database types
 
@@ -77,14 +68,31 @@ export interface IRepositoryDependency {
     passwordManager: PasswordMananger,
 }
 
-export interface IRepository {
+export interface IFarmRespository {
+    create(input: FarmPayload): Promise<mongoose.Document>;
+    find(query: any): Promise<any>;
+    findById(id: FarmPayload["id"]): Promise<mongoose.Document | null>;
+    update(query: any, updatedata: FarmPayload): Promise<mongoose.Document | null>
+    deleteAll(): Promise<any>;
+}
+export interface IAuthRepository {
+    login({ email, password }: { email: string, password: string }): Promise<boolean>
+}
+export interface IStaffRepository extends IAuthRepository {
     create(input: Partial<StaffPayload | InvestorPayload>): Promise<mongoose.Document>;
     find(query: any): Promise<any>;
     update(query: any, updatedata: StaffPayload | InvestorPayload): Promise<mongoose.Document | null>
-    login({ email, password }: { email: string, password: string }): Promise<boolean>
+    deleteAll(): Promise<any>;
+}
+export interface IInventionRepository extends IAuthRepository {
+    create(input: Partial<StaffPayload | InvestorPayload>): Promise<mongoose.Document>;
+    find(query: any): Promise<any>;
+    update(query: any, updatedata: StaffPayload | InvestorPayload): Promise<mongoose.Document | null>
     deleteAll(): Promise<any>;
 }
 
-export type RepositoryFactory = (dependencies: IRepositoryDependency, repository: string) => IRepository;
+export type IRepository = IStaffRepository | IInventionRepository | IFarmRespository;
+
+export type RepositoryFactory = (repository: string, dependencies?: IRepositoryDependency) => IRepository;
 
 export type DatabaseProviderName = "mongoose" | "postgres";

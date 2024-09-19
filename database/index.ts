@@ -18,8 +18,8 @@ const repositoryProvider = databaseConfigs[AppConfig.database.defaultProvider as
 
 if (!repositoryProvider) throw new Error("Unkwon database provider specified");
 
-export const staffRepository: IRepository = repositoryProvider({ passwordManager }, "staff");
-export const investorRepository: IRepository = repositoryProvider({ passwordManager }, "investor");
-
+export const staffRepository: IRepository = repositoryProvider("staff", { passwordManager });
+export const investorRepository: IRepository = repositoryProvider("investor", { passwordManager });
+export const farmRepository: IRepository = repositoryProvider("farm");
 
 

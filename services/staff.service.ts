@@ -2,12 +2,12 @@ import InvalidCredentialsError from '@/lib/errors/invalid-credentials';
 import InvalidPropertyError from '@/lib/errors/invalid-property-error';
 import NotFound from '@/lib/errors/not-found';
 import { generateOTP, makeStaffData, validateStaff, verfiyPassword } from '@/lib/helpers';
-import { IRepository } from '@/types';
+import { IStaffRepository } from '@/types';
 import { ResponsePayload } from '@/types/services';
 import { IStaffService, StaffPayload } from '@/types/services/staff.service';
 
 
-export default function makeStaffService({ repository }: { repository: IRepository }): IStaffService {
+export default function makeStaffService({ repository }: { repository: IStaffRepository }): IStaffService {
 
     const createStaff = async (input: StaffPayload): Promise<ResponsePayload> => {
         const [error, staffData] = validateStaff(input);

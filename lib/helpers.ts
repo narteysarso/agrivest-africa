@@ -5,6 +5,7 @@ import { Document } from 'mongoose';
 import HttpError from './errors/http-error';
 import { object } from 'zod';
 import { InvestorData, InvestorDataSchema, InvestorPayload, InvestorPayloadSchema } from '@/types/services/investor.service';
+import { FarmPayload, FarmPayloadSchema } from '@/types/services/farm.service';
 
 export const hashPassword: PasswordMananger["hashPassword"] = (plainText: string): Promise<string> => {
     return bcrypt.hash(plainText, 10);
@@ -29,6 +30,17 @@ export const validateStaff = (staffData: unknown): [error: string | null, result
 export const validateInvestor = (investorData: unknown): [error: string | null, result: InvestorPayload | null] => {
 
     const results = InvestorPayloadSchema.safeParse(investorData);
+
+    if (!results.success) {
+        return [results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""), null];
+    }
+
+    return [null, results.data];
+}
+
+export const validateFarm = (farmData: unknown): [error: string | null, result: FarmPayload | null] => {
+
+    const results = FarmPayloadSchema.safeParse(farmData);
 
     if (!results.success) {
         return [results.error.issues.reduce((prev, issue,) => (`${prev} ${issue.path[0]} : ${issue.message}`), ""), null];
