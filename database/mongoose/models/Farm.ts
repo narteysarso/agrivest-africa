@@ -1,4 +1,4 @@
-import { Currencies } from '@/components/admin/farm-form';
+import { Currencies } from '@/types/services/farm.service';
 import mongoose, { Schema } from 'mongoose';
 
 const farmSchema = new Schema({

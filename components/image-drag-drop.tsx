@@ -50,7 +50,7 @@ export default function ImageDragDrop({ form }: { form: UseFormReturn<any> }) {
         setPreview(null)
         setError(null)
         form.resetField("image", { defaultValue: "" })
-    }, [])
+    }, [form])
 
     return (
         <div className="w-full max-w-md mx-auto p-6">
