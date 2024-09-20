@@ -62,6 +62,13 @@ const FarmRepository = (d?: IRepositoryDependency): IFarmRespository => {
         return farm;
     }
 
+    async function findAll(): Promise<Document[]> {
+        return _find({});
+    }
+    
+    async function _find(query: FilterQuery<FarmPayload>, options: QueryOptions = { lean: true }): Promise<Document[]> {
+        return Farm.find(query);
+    }
 
     async function find(query: FilterQuery<FarmPayload>, options: QueryOptions = { lean: true }): Promise<Document | null> {
         return Farm.findOne(query, null, options);
@@ -82,6 +89,7 @@ const FarmRepository = (d?: IRepositoryDependency): IFarmRespository => {
 
     return Object.freeze({
         create,
+        findAll,
         find,
         findById,
         update,

@@ -76,7 +76,7 @@ export interface Farm extends z.infer<typeof FarmData> { }
 export interface IFarmService {
     create(input: FarmPayload): Promise<boolean>;
     findAll(limit: number, offset: number, size: number): Promise<Farm[]>;
-    findById(id: FarmPayload["id"]): Promise<Farm | null>;
+    findById(id: FarmPayload["id"]): Promise<Farm>;
     update(id: FarmPayload["id"], newDetails: FarmPayload): Promise<boolean>;
     publishStatus(id: FarmPayload["id"], newPublisState: FarmPayload["publishStatus"]): Promise<boolean>;
     markdeleted(id: FarmPayload["id"]): Promise<boolean>;

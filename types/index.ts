@@ -71,6 +71,7 @@ export interface IRepositoryDependency {
 export interface IFarmRespository {
     create(input: FarmPayload): Promise<mongoose.Document>;
     find(query: any): Promise<any>;
+    findAll(): Promise<mongoose.Document[]>;
     findById(id: FarmPayload["id"]): Promise<mongoose.Document | null>;
     update(query: any, updatedata: FarmPayload): Promise<mongoose.Document | null>
     deleteAll(): Promise<any>;

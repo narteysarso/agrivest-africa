@@ -5,7 +5,7 @@ import { Document } from 'mongoose';
 import HttpError from './errors/http-error';
 import { object } from 'zod';
 import { InvestorData, InvestorDataSchema, InvestorPayload, InvestorPayloadSchema } from '@/types/services/investor.service';
-import { FarmPayload, FarmPayloadSchema } from '@/types/services/farm.service';
+import { Farm, FarmData, FarmPayload, FarmPayloadSchema } from '@/types/services/farm.service';
 
 export const hashPassword: PasswordMananger["hashPassword"] = (plainText: string): Promise<string> => {
     return bcrypt.hash(plainText, 10);
@@ -56,6 +56,10 @@ export const makeStaffData = (staffData: Document): StaffData => {
 
 export const makeInvestorData = (investorData: Document): InvestorData => {
     return InvestorDataSchema.parse(investorData);
+}
+
+export const makeFarm = (farmData: Document): Farm => {
+    return FarmData.parse(farmData);
 }
 
 

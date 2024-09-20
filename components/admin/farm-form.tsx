@@ -15,7 +15,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import AppConfig from '@/app.config'
-import { FarmType } from '@/types'
 import { Button } from '../ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ImageDragDrop from '../image-drag-drop'
@@ -23,7 +22,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
-import { Currencies, FarmPayloadSchema, InvestmentDurationUnits } from '@/types/services/farm.service'
+import { Currencies, FarmPayloadSchema, FarmType, InvestmentDurationUnits } from '@/types/services/farm.service'
 
 const investmentDurationInDaysMultiplier = {
     [InvestmentDurationUnits.DAYS]: 1,
