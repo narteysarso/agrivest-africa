@@ -62,11 +62,11 @@ export const FarmPayloadSchema = z.object({
     publishStatus: z.nativeEnum(PublishStatuses),
     currency: z.nativeEnum(Currencies).default(Currencies.USD).optional(),
     season: z.object({
-        from: z.date(),
-        to: z.date()
+        from: z.number(),
+        to: z.number()
     }),
-    investmentDuration: z.string().min(AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays).transform((val) => parseFloat(val)),
-    investmentDeadline: z.date().optional(),
+    investmentDuration: z.number().min(AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays),
+    investmentDeadline: z.number().optional(),
 });
 
 export interface FarmPayload extends z.infer<typeof FarmPayloadSchema> { }

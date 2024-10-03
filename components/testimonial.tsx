@@ -10,6 +10,8 @@ import {
 import { User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+
+
 export const Testimonials = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -31,11 +33,11 @@ export const Testimonials = () => {
   }, [api, current]);
 
   return (
-    <div className="w-full py-20 lg:py-40">
+    <div className="w-full py-20 lg:py-10 relative">
       <div className="container mx-auto">
         <div className="flex flex-col gap-10">
           <h2 className="text-3xl md:text-5xl tracking-tighter lg:max-w-xl font-regular text-left">
-            Trusted by thousands of businesses worldwide
+            Trusted by thousands of investors and SME farmers
           </h2>
           <Carousel setApi={setApi} className="w-full">
             <CarouselContent>
@@ -69,6 +71,7 @@ export const Testimonials = () => {
           </Carousel>
         </div>
       </div>
+
     </div>
   );
 };

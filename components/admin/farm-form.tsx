@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { BadgeCent, BadgeDollarSign, BadgeEuro, Bean, CalendarDays, CalendarDaysIcon, CalendarIcon, Vegan, Wheat } from 'lucide-react'
+import { BadgeCent, BadgeDollarSign, BadgeEuro, Bean, BookCheck, CalendarDays, CalendarDaysIcon, CalendarIcon, Loader2, SquarePen, Vegan, Wheat } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
@@ -22,7 +22,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Calendar } from '../ui/calendar'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
-import { Currencies, FarmPayloadSchema, FarmType, InvestmentDurationUnits } from '@/types/services/farm.service'
+import { Currencies, FarmPayloadSchema, FarmType, InvestmentDurationUnits, PublishStatuses } from '@/types/services/farm.service'
+import { Switch } from '../ui/switch'
 
 const investmentDurationInDaysMultiplier = {
     [InvestmentDurationUnits.DAYS]: 1,
@@ -37,12 +38,13 @@ export const FarmFormSchema = z.object({
     description: z.string().trim().min(AppConfig.constants.minFarmDescriptionLength).max(AppConfig.constants.maxFarmDescriptionLength),
     investmentDuration: z.string().min(AppConfig.constants.defaultFarmInvestmentMinimumDurationInDays).transform((val) => parseFloat(val)),
     investmentDurationUnit: z.nativeEnum(InvestmentDurationUnits),
-    investmentDeadline: z.date().optional(),
+    investmentDeadline: z.date().transform(val => val.getTime()).optional(),
     currency: z.nativeEnum(Currencies),
     season: z.object({
-        from: z.date(),
-        to: z.date(),
+        from: z.date().transform(val => val.getTime()),
+        to: z.date().transform(val => val.getTime()),
     }).optional(),
+    publishStatus: z.nativeEnum(PublishStatuses),
     type: z.nativeEnum(FarmType),
     unitCost: z.string().min(AppConfig.constants.minimumUnitCost).transform((val) => parseFloat(val)),
     archerPerUnit: z.string().min(AppConfig.constants.minimumFarmArcherage).transform((val) => parseFloat(val)),
@@ -65,7 +67,8 @@ export default function FarmForm() {
             season: undefined,
             archerPerUnit: undefined,
             totalUnits: undefined,
-            unitCost: undefined
+            unitCost: undefined,
+            publishStatus: PublishStatuses.DRAFT
         }
     })
     const [errors, setErrors] = useState<string | null>();
@@ -74,6 +77,7 @@ export default function FarmForm() {
     const onSubmit = async (data: z.infer<typeof FarmFormSchema>) => {
 
         try {
+            setIsLoading(true);
             const {
                 image,
                 name,
@@ -87,6 +91,7 @@ export default function FarmForm() {
                 unitCost,
                 archerPerUnit,
                 totalUnits,
+                publishStatus
             } = data;
 
 
@@ -104,6 +109,7 @@ export default function FarmForm() {
                 unitCost,
                 archerPerUnit,
                 totalUnits,
+                publishStatus
             });
 
             if (!results.success) {
@@ -119,13 +125,16 @@ export default function FarmForm() {
             });
 
             if (!response.ok) {
+                console.log(await response.text())
                 throw new Error("Farm creation failed");
+
             }
 
             await response.json();
 
         } catch (error: any) {
             setErrors(error?.message);
+            console.log(error);
         } finally {
             setIsLoading(false);
         }
@@ -548,6 +557,57 @@ export default function FarmForm() {
                                 </FormItem>
                             )}
                         />
+
+                        <FormField
+                            control={form.control}
+                            name="publishStatus"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Publish Status</FormLabel>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <SelectTrigger
+                                                id="model"
+                                                className="items-start [&_[data-description]]:hidden"
+                                            >
+                                                <SelectValue placeholder="Set publish status" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value={PublishStatuses.DRAFT}>
+                                                    <div className="flex items-start gap-3 text-muted-foreground">
+                                                        <SquarePen className="size-5" />
+                                                        <div className="grid gap-0.5">
+                                                            <p>
+
+                                                                <span className="font-medium text-foreground">
+                                                                    {PublishStatuses.DRAFT}
+                                                                </span>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+                                                </SelectItem>
+                                                <SelectItem value={PublishStatuses.PUBLISHED}>
+                                                    <div className="flex items-start gap-3 text-muted-foreground">
+                                                        <BookCheck className="size-5" />
+                                                        <div className="grid gap-0.5">
+                                                            <p>
+
+                                                                <span className="font-medium text-foreground">
+                                                                    {PublishStatuses.PUBLISHED}
+                                                                </span>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
 
 
@@ -569,8 +629,11 @@ export default function FarmForm() {
                     </div>
                 </fieldset>
                 <div className='grid grid-cols-2 gap-4 pt-10'>
-                    <Button type="reset" variant={"destructive"}>Reset</Button>
-                    <Button type="submit">Submit</Button>
+                    <Button type="reset" variant={"destructive"} disabled={isLoading}>Reset</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Create farm
+                    </Button>
                 </div>
             </form>
         </Form>

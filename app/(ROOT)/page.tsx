@@ -1,3 +1,4 @@
+import AboutUs from '@/components/about-us';
 import { CTA } from "@/components/cta";
 import { Hero } from "@/components/hero";
 import { Pricing } from "@/components/pricing";
@@ -6,7 +7,7 @@ import React from "react";
 
 export default function Home(): React.ReactNode {
     return (
-        <main>
+        <main className='overflow-x-hidden overflow-y-hidden'>
             <section>
                 <Hero />
             </section>
@@ -19,7 +20,10 @@ export default function Home(): React.ReactNode {
             <section>
                 <Testimonials />
             </section>
-          
+            <section>
+                <AboutUs />
+            </section>
+
         </main>
     )
 }
