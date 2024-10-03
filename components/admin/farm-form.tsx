@@ -491,7 +491,6 @@ export default function FarmForm() {
                                         <PopoverContent className="w-auto p-0" align="start">
                                             <Calendar
                                                 mode="single"
-                                                selected={field.value}
                                                 onSelect={field.onChange}
                                                 disabled={(date) =>
                                                     date < new Date()
@@ -543,8 +542,7 @@ export default function FarmForm() {
                                             <Calendar
                                                 initialFocus
                                                 mode="range"
-                                                defaultMonth={field.value?.from}
-                                                selected={field.value}
+                                               
                                                 onSelect={field.onChange}
                                                 numberOfMonths={2}
                                                 disabled={(date) =>
