@@ -92,6 +92,18 @@ export interface IInventionRepository extends IAuthRepository {
     deleteAll(): Promise<any>;
 }
 
+export interface FarmCardProps {
+    arr?: number,
+    location?: string,
+    currency?: string,
+    title?: string,
+    description?: string,
+    cost?: number,
+    tags?: string[],
+    season?: { start: number, end: number }
+}
+
+
 export type IRepository = IStaffRepository | IInventionRepository | IFarmRespository;
 
 export type RepositoryFactory = (repository: string, dependencies?: IRepositoryDependency) => IRepository;

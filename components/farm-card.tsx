@@ -4,20 +4,12 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { StaffRole } from '@/types';
+import { FarmCardProps, StaffRole } from '@/types';
 import { Badge } from './ui/badge';
 import Image from 'next/image';
+import AppConfig from '@/app.config';
+import Link from 'next/link';
 
-interface FarmCardProps {
-    arr?: number,
-    location?: string,
-    currency?: string,
-    title?: string,
-    description?: string,
-    cost?: number,
-    tags?: string[],
-    season?: { start: number, end: number }
-}
 
 const defaultValues: FarmCardProps = {
     cost: 35,
@@ -47,13 +39,22 @@ async function FarmCard({
     return (
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
-                <CardTitle>
-                    <span className="flex flex-row gap-4 items-center font-normal">
-                        {title}
-                    </span>
-                    <span>
-                        {tags && tags.map((tag, idx) => (<Badge key={idx}>{tag}</Badge>))}
-                    </span>
+                <CardTitle className='flex flex-col gap-2' >
+                    <Image
+                        src={AppConfig.resource.images.defaultProfileImage}
+                        alt="Preview"
+                        width={250}
+                        height={250}
+                        className="w-full max-w-full h-auto rounded"
+                    />
+                    <div className="flex flex-col gap-1 ">
+                        <span className="items-center font-normal">
+                            {title}
+                        </span>
+                        <span>
+                            {tags && tags.map((tag, idx) => (<Badge key={idx}>{tag}</Badge>))}
+                        </span>
+                    </div>
                 </CardTitle>
                 <CardDescription>
                     {description}
@@ -99,12 +100,19 @@ async function FarmCard({
                     </div>
                     {
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
-                            (<Button className="gap-4">
-                                Sponsor farm<MoveRight className="w-4 h-4" />
-                            </Button>) :
-                            (<Button variant="outline" className="gap-4">
-                                Sign up today <MoveRight className="w-4 h-4" />
-                            </Button>)
+                            (
+                                <Link href={AppConfig.routes.pages.signin}>
+                                    <Button className="gap-4">
+                                        Sponsor farm<MoveRight className="w-4 h-4" />
+                                    </Button>
+                                </Link>
+                            ) :
+                            (<Link href={AppConfig.routes.pages.signin}>
+                                <Button variant="outline" className="gap-4">
+                                    Sign in today <MoveRight className="w-4 h-4" />
+                                </Button>
+                            </Link>
+                            )
                     }
                 </div>
             </CardContent>
