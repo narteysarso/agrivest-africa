@@ -17,7 +17,8 @@ function AboutUs() {
                                 Agrivest Africa : The start of something new
                             </h2>
                             <p className="text-lg lg:max-w-sm leading-relaxed tracking-tight text-muted-foreground text-left">
-                                One/two paragraph pitch of Agrivest
+                                Welcome to the number one equity crowd-funding platform focused on Connecting agrivestors, small to medium scale farmers and commodities in Africa.
+                                We are maximizing returns and promoting sustainable agricultural practices across africa. join us on our journey to a new world.
                             </p>
                         </div>
                     </div>

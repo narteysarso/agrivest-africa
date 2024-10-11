@@ -5,7 +5,7 @@ import { FarmTestData } from '@/database/dummy/farms';
 import { FarmCardProps } from '@/types';
 
 const loadFarmsData = async () => {
-  return await FarmTestData.slice(0, 3);
+  return await FarmTestData.slice(0, 4);
 }
 
 
@@ -29,7 +29,7 @@ const FarmsList = async () => {
 
   if (farms && farms.length) {
     return (
-      <div className="grid pt-10 text-left grid-cols-1 lg:grid-cols-3 w-full gap-8">
+      <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
         {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
       </div>
     )

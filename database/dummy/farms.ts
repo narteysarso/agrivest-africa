@@ -2,6 +2,7 @@ import { FarmCardProps } from '@/types';
 
 export const FarmTestData: FarmCardProps[] = [
     {
+        img: "/images/peanuts.gif",
         cost: 45,
         location: "Tamale",
         arr: 12.56,
@@ -12,6 +13,7 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD"
     },
     {
+        img: "/images/beans.gif",
         cost: 105,
         location: "Tamale",
         arr: 9.56,
@@ -22,6 +24,7 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD"
     },
     {
+        img: "/images/corn.gif",
         cost: 25,
         location: "Tamale",
         arr: 2.56,
@@ -32,6 +35,7 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD"
     },
     {
+        img: "/images/rice.gif",
         cost: 75,
         location: "Tamale",
         arr: 11.56,
@@ -42,6 +46,7 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD"
     },
     {
+        img: "/images/soya-beans.gif",
         cost: 85,
         location: "Tamale",
         arr: 10.56,

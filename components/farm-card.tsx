@@ -9,9 +9,11 @@ import { Badge } from './ui/badge';
 import Image from 'next/image';
 import AppConfig from '@/app.config';
 import Link from 'next/link';
+import { Separator } from './ui/separator';
 
 
 const defaultValues: FarmCardProps = {
+    img: "",
     cost: 35,
     location: "Tamale",
     arr: 12.56,
@@ -24,6 +26,7 @@ const defaultValues: FarmCardProps = {
 
 
 async function FarmCard({
+    img,
     title,
     description,
     currency,
@@ -41,7 +44,7 @@ async function FarmCard({
             <CardHeader>
                 <CardTitle className='flex flex-col gap-2' >
                     <Image
-                        src={AppConfig.resource.images.defaultProfileImage}
+                        src={img || AppConfig.resource.images.defaultProfileImage}
                         alt="Preview"
                         width={250}
                         height={250}
@@ -69,6 +72,23 @@ async function FarmCard({
                             / Unit
                         </span>
                     </p>
+                    {
+                        session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
+                            (
+                                <Link href={AppConfig.routes.pages.signin}>
+                                    <Button className="gap-4">
+                                        Sponsor farm<MoveRight className="w-4 h-4" />
+                                    </Button>
+                                </Link>
+                            ) :
+                            (<Link href={AppConfig.routes.pages.signin}>
+                                <Button variant="outline" className="gap-4">
+                                    Sign in today <MoveRight className="w-4 h-4" />
+                                </Button>
+                            </Link>
+                            )
+                    }
+                    <Separator />
                     <div className="flex flex-col gap-4 justify-start">
                         <div className="flex flex-row gap-4">
                             <Check className="w-4 h-4 mt-2 text-primary" />
@@ -98,22 +118,6 @@ async function FarmCard({
                             </div>
                         </div>
                     </div>
-                    {
-                        session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
-                            (
-                                <Link href={AppConfig.routes.pages.signin}>
-                                    <Button className="gap-4">
-                                        Sponsor farm<MoveRight className="w-4 h-4" />
-                                    </Button>
-                                </Link>
-                            ) :
-                            (<Link href={AppConfig.routes.pages.signin}>
-                                <Button variant="outline" className="gap-4">
-                                    Sign in today <MoveRight className="w-4 h-4" />
-                                </Button>
-                            </Link>
-                            )
-                    }
                 </div>
             </CardContent>
         </Card>

@@ -93,6 +93,7 @@ export interface IInventionRepository extends IAuthRepository {
 }
 
 export interface FarmCardProps {
+    img?: string,
     arr?: number,
     location?: string,
     currency?: string,
