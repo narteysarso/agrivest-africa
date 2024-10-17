@@ -37,7 +37,7 @@ function FarmCard({
 }: FarmCardProps = defaultValues) {
 
     const { data: session } = useSession()
-    const { setShowCart } = useCart()
+    const { setShowCart, addItemToCartList } = useCart()
     return (
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
@@ -75,6 +75,17 @@ function FarmCard({
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
                             (
                                 <Button className="gap-4" onClick={() => {
+                                    addItemToCartList({
+                                        img,
+                                        title,
+                                        description,
+                                        currency,
+                                        cost,
+                                        location,
+                                        tags,
+                                        arr,
+                                        season,
+                                    })
                                     setShowCart(true);
                                 }}>
                                     Sponsor farm<MoveRight className="w-4 h-4" />

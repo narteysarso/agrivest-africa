@@ -17,15 +17,16 @@ export function CartDialog() {
     const { showCart, setShowCart } = useCart()
     return (
         <Dialog open={showCart} onOpenChange={(open) => { setShowCart(open) }}>
-
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Checkout Details</DialogTitle>
                     <DialogDescription>
-                        Make changes to your profile here. Click save when you&apos;re done.
+                        Manage your purchases.
                     </DialogDescription>
                 </DialogHeader>
+
                 <PaymentMethod />
+
             </DialogContent>
         </Dialog>
     )

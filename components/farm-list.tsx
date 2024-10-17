@@ -42,10 +42,12 @@ const FarmsList = () => {
 
     if (farms && farms.length) {
         return (
-            <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
-                <CartDialog />
-                {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
-            </div>
+            <>
+                <CartDialog  />
+                <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
+                    {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
+                </div>
+            </>
         )
     }
 
