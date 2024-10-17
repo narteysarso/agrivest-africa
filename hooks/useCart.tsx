@@ -25,13 +25,16 @@ const CartContext = createContext<CartContext>(defaultCartContext);
 
 
 export function CartContextProvider({ children }: { children: React.ReactNode }) {
+    const [showCart, setShowCart] = useState<boolean>(false);
     const [cartList, setCartList] = useState<CartListType[]>([]);
     const [cartTotal, setCartTotal] = useState<number>(0);
 
     return (
         <CartContext.Provider value={{
+            showCart,
             cartList,
             setCartList,
+            setShowCart,
             cartTotal,
             setCartTotal
         }}>
@@ -44,7 +47,7 @@ export function CartContextProvider({ children }: { children: React.ReactNode })
 
 export default function useCart() {
 
-    const { cartList, setCartList, cartTotal, setCartTotal } = useContext(CartContext);
+    const { cartList, setCartList, cartTotal, setCartTotal, showCart, setShowCart } = useContext(CartContext);
 
     const addItemToCartList = (farmDetails: FarmCardProps) => {
         setCartList?.((prev: CartListType[]) => [...prev, farmDetails]);
@@ -87,9 +90,11 @@ export default function useCart() {
     }
 
     return Object.freeze({
+        showCart,
         cartTotal,
         cartList,
         addItemToCartList,
+        setShowCart,
         removeItemFromCartList,
         increaseQuantity,
         decreaseQuantity

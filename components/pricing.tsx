@@ -1,46 +1,10 @@
+
 import { Badge } from "@/components/ui/badge";
-import FarmCard from './farm-card';
 import "@/styles/shape-bg.css";
-import { FarmTestData } from '@/database/dummy/farms';
-import { FarmCardProps } from '@/types';
 
-const loadFarmsData = async () => {
-  return await FarmTestData.slice(0, 4);
-}
+import FarmsList from './farm-list';
 
-
-export const EmptyFarm = () => (
-  <div className="flex flex-col text-center py-14 gap-4 items-center">
-
-    <div className="flex flex-col gap-2">
-      <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl">
-        We are constantly updating and expanding our farms catelogue to help accommodate diverse crops and animals.
-        Kindly check back here soon for the latest on our list. Thank you.
-      </p>
-    </div>
-  </div>
-
-);
-
-
-const FarmsList = async () => {
-
-  const farms: FarmCardProps[] = await loadFarmsData();
-
-  if (farms && farms.length) {
-    return (
-      <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
-        {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
-      </div>
-    )
-  }
-
-  return (<EmptyFarm />)
-}
-
-export const Pricing = async () => {
-
-
+export const Pricing = () => {
 
   return (
 

@@ -2,14 +2,13 @@ import { Check, MoveRight, Tags } from 'lucide-react'
 import React from 'react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { FarmCardProps, StaffRole } from '@/types';
 import { Badge } from './ui/badge';
 import Image from 'next/image';
 import AppConfig from '@/app.config';
 import Link from 'next/link';
 import { Separator } from './ui/separator';
+import { useSession } from 'next-auth/react';
 
 
 const defaultValues: FarmCardProps = {
@@ -24,8 +23,7 @@ const defaultValues: FarmCardProps = {
     currency: "USD"
 }
 
-
-async function FarmCard({
+function FarmCard({
     img,
     title,
     description,
@@ -34,11 +32,10 @@ async function FarmCard({
     location,
     tags,
     arr,
-    season
+    season,
 }: FarmCardProps = defaultValues) {
 
-    const session = await getServerSession(authOptions);
-
+    const { data: session } = useSession()
     return (
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
@@ -75,11 +72,9 @@ async function FarmCard({
                     {
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
                             (
-                                <Link href={AppConfig.routes.pages.signin}>
-                                    <Button className="gap-4">
-                                        Sponsor farm<MoveRight className="w-4 h-4" />
-                                    </Button>
-                                </Link>
+                                <Button className="gap-4">
+                                    Sponsor farm<MoveRight className="w-4 h-4" />
+                                </Button>
                             ) :
                             (<Link href={AppConfig.routes.pages.signin}>
                                 <Button variant="outline" className="gap-4">

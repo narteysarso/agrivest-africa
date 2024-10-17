@@ -3,6 +3,7 @@ import { StaffPayload } from './services/staff.service';
 import mongoose from 'mongoose';
 import { InvestorPayload } from './services/investor.service';
 import { FarmPayload } from './services/farm.service';
+import { Session } from 'next-auth';
 
 export type NavigationItemsType = {
     title: string,

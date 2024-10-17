@@ -5,6 +5,9 @@ import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CartContextProvider } from '@/hooks/useCart';
+import AuthProvider from '@/hooks/SessionProvider';
+import { authOptions } from '../api/auth/[...nextauth]/options';
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -18,27 +21,33 @@ export const metadata: Metadata = {
 	keywords: ["agriculture", "africa", "ghana", "farming", "crowdfund"]
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={cn(
-				"min-h-screen bg-background font-sans antialiased",
-				fontSans.variable
-			)}>
-				<nav>
-					<Header />
-				</nav>
-				
-				{children}
+		<AuthProvider>
+			<html lang="en" suppressHydrationWarning>
+				<body className={cn(
+					"min-h-screen bg-background font-sans antialiased",
+					fontSans.variable
+				)}>
+					<nav>
+						<Header />
+					</nav>
+					<CartContextProvider>
 
-				<footer>
-					<Footer />
-				</footer>
-			</body>
-		</html>
+						{children}
+
+					</CartContextProvider>
+
+					<footer>
+						<Footer />
+					</footer>
+				</body>
+			</html>
+		</AuthProvider>
+
 	);
 }
