@@ -7,6 +7,7 @@ import React from "react";
 
 export default function Home(): React.ReactNode {
     return (
+        
         <main className='overflow-x-hidden overflow-y-hidden'>
             <section>
                 <Hero />

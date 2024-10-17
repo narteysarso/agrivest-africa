@@ -11,10 +11,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export function PurchaseDialog() {
-    
+export function CartDialog() {
     return (
-        <Dialog open={true} onOpenChange={(open) => {}}>
+        <Dialog open={true} onOpenChange={(open) => { }}>
             <DialogTrigger asChild>
                 <Button variant="outline">Edit Profile</Button>
             </DialogTrigger>

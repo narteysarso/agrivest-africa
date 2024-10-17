@@ -3,13 +3,26 @@
 import { FarmCardProps } from '@/types';
 import React, { createContext, useContext, useState } from 'react';
 
-const defaultCartContext = {}
-
-const CartContext = createContext(defaultCartContext);
-
 interface CartListType extends FarmCardProps {
     quantity: number
 }
+
+type CartContext = any | {
+    cartList: CartListType[]
+    setCartList?: React.Dispatch<React.SetStateAction<CartListType[]>>
+    cartTotal: number
+    setCartTotal?: React.Dispatch<number>
+}
+
+const defaultCartContext: CartContext = {
+    cartList: new Array<CartListType>(),
+    cartTotal: 0
+}
+
+const CartContext = createContext<CartContext>(defaultCartContext);
+
+
+
 
 export function CartContextProvider({ children }: { children: React.ReactNode }) {
     const [cartList, setCartList] = useState<CartListType[]>([]);
@@ -19,7 +32,7 @@ export function CartContextProvider({ children }: { children: React.ReactNode })
         <CartContext.Provider value={{
             cartList,
             setCartList,
-            cartTotal, 
+            cartTotal,
             setCartTotal
         }}>
             {children}
@@ -28,12 +41,13 @@ export function CartContextProvider({ children }: { children: React.ReactNode })
 }
 
 
+
 export default function useCart() {
 
     const { cartList, setCartList, cartTotal, setCartTotal } = useContext(CartContext);
 
     const addItemToCartList = (farmDetails: FarmCardProps) => {
-        setCartList((prev: CartListType[]) => [...prev, farmDetails]);
+        setCartList?.((prev: CartListType[]) => [...prev, farmDetails]);
     }
 
     const removeItemFromCartList = (idx: number) => {
@@ -43,24 +57,24 @@ export default function useCart() {
 
     const increaseQuantity = (idx: number) => {
         if (!(Math.abs(idx) < cartList.length)) return;
-        setCartList((prev: CartListType[]) => {
+        setCartList?.((prev: CartListType[]) => {
             const itemById = prev[idx];
             const newQty = itemById.quantity++;
             const updatedItem = { ...itemById, quantity: newQty } // TODO: make maximum quantity check
             prev.splice(idx, 1, updatedItem);
         })
-        setCartTotal(calculateTotal(cartList));
+        setCartTotal?.(calculateTotal(cartList));
     }
 
     const decreaseQuantity = (idx: number) => {
         if (!(Math.abs(idx) < cartList.length)) return;
-        setCartList((prev: CartListType[]) => {
+        setCartList?.((prev: CartListType[]) => {
             const itemById = prev[idx];
             const newQty = itemById.quantity--;
             const updatedItem = { ...itemById, quantity: newQty } // TODO: make minimum quantity check
             prev.splice(idx, 1, updatedItem);
         })
-        setCartTotal(calculateTotal(cartList));
+        setCartTotal?.(calculateTotal(cartList));
     }
 
     const calculateTotal = (cartItems: CartListType[]) => {
@@ -73,6 +87,8 @@ export default function useCart() {
     }
 
     return Object.freeze({
+        cartTotal,
+        cartList,
         addItemToCartList,
         removeItemFromCartList,
         increaseQuantity,

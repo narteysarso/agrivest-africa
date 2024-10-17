@@ -32,6 +32,7 @@ export default function RootLayout({
 				<nav>
 					<Header />
 				</nav>
+				
 				{children}
 
 				<footer>
