@@ -5,6 +5,8 @@ import { FarmCardProps } from '@/types';
 import { useEffect, useState } from 'react';
 import FarmCard from './farm-card';
 import { Session } from 'next-auth';
+import { CartDialog } from './cart-dialog';
+import useCart from '@/hooks/useCart';
 
 
 const loadFarmsData = async () => {
@@ -29,6 +31,7 @@ export const EmptyFarm = () => (
 const FarmsList = () => {
 
     const [farms, setFarms] = useState<FarmCardProps[]>([]);
+    const { showCart } = useCart();
 
     useEffect(() => {
         (async () => {
@@ -40,6 +43,7 @@ const FarmsList = () => {
     if (farms && farms.length) {
         return (
             <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
+                <CartDialog />
                 {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
             </div>
         )

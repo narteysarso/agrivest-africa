@@ -9,6 +9,7 @@ import AppConfig from '@/app.config';
 import Link from 'next/link';
 import { Separator } from './ui/separator';
 import { useSession } from 'next-auth/react';
+import useCart from '@/hooks/useCart';
 
 
 const defaultValues: FarmCardProps = {
@@ -36,6 +37,7 @@ function FarmCard({
 }: FarmCardProps = defaultValues) {
 
     const { data: session } = useSession()
+    const { setShowCart } = useCart()
     return (
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
@@ -72,7 +74,9 @@ function FarmCard({
                     {
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
                             (
-                                <Button className="gap-4">
+                                <Button className="gap-4" onClick={() => {
+                                    setShowCart(true);
+                                }}>
                                     Sponsor farm<MoveRight className="w-4 h-4" />
                                 </Button>
                             ) :
