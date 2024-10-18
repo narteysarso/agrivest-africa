@@ -5,7 +5,7 @@ import "@/styles/shape-bg.css";
 
 function AboutUs() {
     return (
-        <div className="w-full py-5 lg:py-10 relative">
+        <div className="w-full py-5 lg:py-10 relative" id="about">
             <div className="container mx-auto z-[200]">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div className="flex gap-4 flex-col items-start">

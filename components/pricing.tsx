@@ -21,7 +21,7 @@ export const Pricing = () => {
             </p>
           </div>
 
-          <FarmsList />
+          <FarmsList start={0} limit={4} />
         </div>
       </div>
 

@@ -49,9 +49,11 @@ export const Header = async () => {
                                 {item.description}
                               </p>
                             </div>
-                            <Button size="sm" className="mt-10">
-                              View Products
-                            </Button>
+                            <Link href={AppConfig.routes.pages.farms}>
+                              <Button size="sm" className="mt-10">
+                                View Farms
+                              </Button>
+                            </Link>
                           </div>
                           <div className="flex flex-col text-sm h-full justify-end">
                             {item.items?.map((subItem) => (

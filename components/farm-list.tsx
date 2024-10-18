@@ -4,13 +4,12 @@ import { FarmTestData } from '@/database/dummy/farms';
 import { FarmCardProps } from '@/types';
 import { useEffect, useState } from 'react';
 import FarmCard from './farm-card';
-import { Session } from 'next-auth';
 import { CartDialog } from './cart-dialog';
-import useCart from '@/hooks/useCart';
 
 
-const loadFarmsData = async () => {
-    return await FarmTestData.slice(0, 4);
+const loadFarmsData = async (start: number = 0, limit: number | undefined) => {
+    if (!limit) await FarmTestData.slice(start);
+    return await FarmTestData.slice(start, limit);
 }
 
 
@@ -28,14 +27,12 @@ export const EmptyFarm = () => (
 );
 
 
-const FarmsList = () => {
+const FarmsList = ({ start = 0, limit }: { start: number, limit?: number }) => {
 
     const [farms, setFarms] = useState<FarmCardProps[]>([]);
-    const { showCart } = useCart();
-
     useEffect(() => {
         (async () => {
-            setFarms(await loadFarmsData());
+            setFarms(await loadFarmsData(start, limit));
         })()
     }, []);
 
@@ -43,7 +40,7 @@ const FarmsList = () => {
     if (farms && farms.length) {
         return (
             <>
-                <CartDialog  />
+                <CartDialog />
                 <div className="grid pt-5 text-left grid-cols-1 lg:grid-cols-4 w-full gap-4">
                     {farms.map((farm: FarmCardProps, idx: number) => (<FarmCard key={idx} {...farm} />))}
                 </div>

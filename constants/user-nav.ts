@@ -58,24 +58,12 @@ export const mainNavigationItems = [
         href: AppConfig.routes.pages.farms,
     },
     {
-        title: "Market",
-        href: AppConfig.routes.pages.market,
-    },
-    {
         title: "Company",
         description: "Managing a small business today is already tough.",
         items: [
             {
                 title: "About us",
-                href: AppConfig.routes.pages.about,
-            },
-            {
-                title: "Most Asked Questions",
-                href: AppConfig.routes.pages.faq,
-            },
-            {
-                title: "Contact us",
-                href: AppConfig.routes.pages.contactus,
+                href: `${AppConfig.routes.pages.home}#about`,
             },
         ],
     },
