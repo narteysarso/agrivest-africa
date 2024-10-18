@@ -93,15 +93,32 @@ export interface IInventionRepository extends IAuthRepository {
     deleteAll(): Promise<any>;
 }
 
+
+export enum FarmType {
+    CROP = 'crop',
+    LIVESTOCK = 'livestock'
+}
+
+export enum FarmStatus {
+    AVAILABLE = "Available",
+    SOLD_OUT = "Sold Out"
+}
+
 export interface FarmCardProps {
+    id?: string,
     img?: string,
     arr?: number,
     location?: string,
     currency?: string,
+    priority?: number,
+    rosMax?: number,
+    rosMin?: number,
     title?: string,
     description?: string,
     cost?: number,
     tags?: string[],
+    status: boolean,
+    type: FarmType,
     season?: { start: number, end: number }
 }
 

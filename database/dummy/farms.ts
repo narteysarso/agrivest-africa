@@ -1,4 +1,4 @@
-import { FarmCardProps } from '@/types';
+import { FarmCardProps, FarmType } from '@/types';
 
 export const FarmTestData: FarmCardProps[] = [
     {
@@ -10,7 +10,10 @@ export const FarmTestData: FarmCardProps[] = [
         title: 'Groundnut Farm',
         tags: ["crop", "groundnut"],
         description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-        currency: "USD"
+        currency: "USD",
+        priority: 1,
+        status: false,
+        type: FarmType.CROP
     },
     {
         img: "/images/beans.gif",
@@ -21,7 +24,10 @@ export const FarmTestData: FarmCardProps[] = [
         title: 'Beans Farm',
         tags: ["crop", "beans"],
         description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-        currency: "USD"
+        currency: "USD",
+        priority: 1,
+        status: true,
+        type: FarmType.CROP
     },
     {
         img: "/images/corn.gif",
@@ -32,7 +38,10 @@ export const FarmTestData: FarmCardProps[] = [
         title: 'Maize Farm',
         tags: ["crop", "maize"],
         description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-        currency: "USD"
+        currency: "USD",
+        priority: 35,
+        status: true,
+        type: FarmType.CROP
     },
     {
         img: "/images/rice.gif",
@@ -43,7 +52,10 @@ export const FarmTestData: FarmCardProps[] = [
         title: 'Rice Farm',
         tags: ["crop", "rice"],
         description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-        currency: "USD"
+        currency: "USD",
+        priority: 8,
+        status: true,
+        type: FarmType.CROP
     },
     {
         img: "/images/soya-beans.gif",
@@ -54,6 +66,9 @@ export const FarmTestData: FarmCardProps[] = [
         title: 'Soyabean Farm',
         tags: ["crop", "soyabeans"],
         description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-        currency: "USD"
+        currency: "USD",
+        priority: 4,
+        status: false,
+        type: FarmType.CROP
     }
 ]

@@ -1,16 +1,10 @@
 'use client';
 
-import { FarmTestData } from '@/database/dummy/farms';
 import { FarmCardProps } from '@/types';
 import { useEffect, useState } from 'react';
 import FarmCard from './farm-card';
 import { CartDialog } from './cart-dialog';
-
-
-const loadFarmsData = async (start: number = 0, limit: number | undefined) => {
-    if (!limit) await FarmTestData.slice(start);
-    return await FarmTestData.slice(start, limit);
-}
+import { loadFarmsData } from '@/lib/utils';
 
 
 export const EmptyFarm = () => (
@@ -34,7 +28,7 @@ const FarmsList = ({ start = 0, limit }: { start: number, limit?: number }) => {
         (async () => {
             setFarms(await loadFarmsData(start, limit));
         })()
-    }, []);
+    }, [start, limit]);
 
 
     if (farms && farms.length) {

@@ -2,7 +2,7 @@ import { Check, MoveRight, Tags } from 'lucide-react'
 import React from 'react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { FarmCardProps, StaffRole } from '@/types';
+import { FarmCardProps, FarmStatus, FarmType, StaffRole } from '@/types';
 import { Badge } from './ui/badge';
 import Image from 'next/image';
 import AppConfig from '@/app.config';
@@ -21,7 +21,9 @@ const defaultValues: FarmCardProps = {
     title: 'Rice Farm',
     tags: ["crop", "maize"],
     description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
-    currency: "USD"
+    currency: "USD",
+    status: false,
+    type: FarmType.CROP
 }
 
 function FarmCard({
@@ -34,6 +36,8 @@ function FarmCard({
     tags,
     arr,
     season,
+    status,
+    type
 }: FarmCardProps = defaultValues) {
 
     const { data: session } = useSession()
@@ -42,6 +46,9 @@ function FarmCard({
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
                 <CardTitle className='flex flex-col gap-2' >
+                    <div className='absolute'>
+                        {status ? <Badge >{FarmStatus.AVAILABLE}</Badge> : <Badge className="bg-yellow-500 text-yellow-900 border border-yellow-600 hover:bg-yellow-400">{FarmStatus.SOLD_OUT}</Badge>}
+                    </div>
                     <Image
                         src={img || AppConfig.resource.images.defaultProfileImage}
                         alt="Preview"
@@ -74,7 +81,7 @@ function FarmCard({
                     {
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
                             (
-                                <Button className="gap-4" onClick={() => {
+                                <Button className="gap-4" disabled={!status} onClick={() => {
                                     addItemToCartList({
                                         img,
                                         title,
@@ -85,6 +92,8 @@ function FarmCard({
                                         tags,
                                         arr,
                                         season,
+                                        status,
+                                        type
                                     })
                                     setShowCart(true);
                                 }}>

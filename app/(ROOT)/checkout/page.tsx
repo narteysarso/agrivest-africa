@@ -1,24 +1,32 @@
-'use client';
+import { useParams } from 'next/navigation'
+import React, { useEffect } from 'react'
 
-import FarmsList from '@/components/farm-list'
-import React from 'react'
+function Checkout() {
+    const { farmId } = useParams();
 
-function Farms() {
+    useEffect(() => {
+
+        (async () => {
+
+        })()
+    }, [farmId]);
+
     return (
+
         <div className="w-full py-5 lg:py-10 relative">
             <div className="container mx-auto">
                 <div className="flex text-center justify-center items-center gap-4 flex-col z-[9]">
+
                     <div className="flex gap-2 flex-col">
                         <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl text-center font-regular">
-                            Invest in farms we grow
+                            Check out
                         </h2>
-                        <p className="text-sm leading-relaxed tracking-tight text-muted-foreground max-w-xl text-center">
-                            By sponsoring a farm, you became an equity shareholder of the farm. Thus, you make passive income when harvested produce are sold. You can also take your share as the produce you sponsored
-                            There Is Risk In Farming. We dont Guarantee returns of your sponsorship or profit.
-                        </p>
+                        {/* <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl text-center">
+              Managing a small farm today is already tough. <br /> <span> Let&apos;s make it easy</span>
+            </p> */}
                     </div>
 
-                    <FarmsList start={0} />
+
                 </div>
             </div>
 
@@ -1230,7 +1238,8 @@ function Farms() {
             </div>
             {/* backgrounds starts */}
         </div>
+
     )
 }
 
-export default Farms
+export default Checkout
