@@ -77,12 +77,15 @@ export const Header = async () => {
           </NavigationMenu>
         </div>
         <div className="flex lg:justify-center">
-          <Image
-            src={process.env.APP_ICON as string}
-            width={34}
-            height={34}
-            alt="logo"
-          /><p className="font-semibold">Agrivest Africa</p>
+          <Link href={AppConfig.routes.pages.home} className='flex'>
+            <Image
+              src={process.env.APP_ICON as string}
+              width={34}
+              height={34}
+
+              alt="logo"
+            /><p className="font-semibold">Agrivest Africa</p>
+          </Link>
         </div>
         <div className="flex justify-end w-full gap-4">
           {
