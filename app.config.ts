@@ -10,6 +10,7 @@ export const MIN_FARM_DESCRIPTIION_LENGTH = 20;
 export const MIN_NAME_LENGHT = 2;
 export const MINIMUM_UNIT_COST = 1;
 export const MINIMUM_FARM_UNIT = 1;
+export const DEFAULT_PHONENUMBER = +233540222273;
 export const MINIMUM_FARM_INVESTMENT_DURATION_IN_DAYS = 1;
 
 const AppConfig = {
@@ -23,7 +24,8 @@ const AppConfig = {
         minFarmNameLength: MIN_FARM_NAME_LENGTH,
         minNameLength: MIN_NAME_LENGHT,
         minimumUnitCost: MINIMUM_UNIT_COST,
-        defaultFarmInvestmentMinimumDurationInDays: MINIMUM_FARM_INVESTMENT_DURATION_IN_DAYS
+        defaultFarmInvestmentMinimumDurationInDays: MINIMUM_FARM_INVESTMENT_DURATION_IN_DAYS,
+        defaultPhonenumber: DEFAULT_PHONENUMBER
     },
     resource: {
         images: {

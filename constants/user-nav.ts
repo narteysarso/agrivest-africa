@@ -63,7 +63,7 @@ export const mainNavigationItems = [
         items: [
             {
                 title: "About us",
-                href: `${AppConfig.routes.pages.home}#about`,
+                href: `${AppConfig.routes.pages.about}`,
             },
         ],
     },
