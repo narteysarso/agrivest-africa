@@ -1,10 +1,43 @@
 'use client'
-
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Check } from 'lucide-react';
+import { FarmCardProps, FarmStatus, FarmType } from '@/types';
+import AppConfig from '@/app.config';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { PaymentMethod } from '@/components/payment-card';
+
+const defaultValues: FarmCardProps = {
+    img: "",
+    cost: 35,
+    location: "Tamale",
+    arr: 12.56,
+    season: { start: Date.now(), end: Date.now() },
+    title: 'Rice Farm',
+    tags: ["crop", "maize"],
+    description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
+    currency: "USD",
+    status: false,
+    type: FarmType.CROP
+}
 
 function Checkout() {
     const { farmId } = useParams();
+    const [farm, setFamr] = useState(defaultValues);
+    const [date, setDate] = useState<Date | undefined>(new Date());
 
     useEffect(() => {
 
@@ -15,19 +48,117 @@ function Checkout() {
 
     return (
 
-        <div className="w-full py-5 lg:py-10 relative">
+        <div className="w-full py-5 lg:py-10">
             <div className="container mx-auto">
-                <div className="flex text-center justify-center items-center gap-4 flex-col z-[9]">
+                <div className="grid container py-8 grid-cols-1 gap-8 lg:grid-cols-3">
 
-                    <div className="flex gap-2 flex-col">
-                        <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl text-center font-regular">
-                            Check out
-                        </h2>
-                        {/* <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl text-center">
-              Managing a small farm today is already tough. <br /> <span> Let&apos;s make it easy</span>
-            </p> */}
+                    <div>
+                        <Card className="w-full rounded-md z-[9] bg-opacity-75">
+                            <CardHeader>
+                                <CardTitle className='flex flex-col gap-2' >
+                                    <Image
+                                        src={farm?.img || AppConfig.resource.images.defaultProfileImage}
+                                        alt="Preview"
+                                        width={250}
+                                        height={250}
+                                        className="w-full max-w-full h-auto rounded"
+                                    />
+                                    <div className="flex flex-col gap-1 ">
+                                        <span className="items-center font-normal">
+                                            {farm?.title}
+                                        </span>
+                                        <span>
+                                            {farm?.tags && farm?.tags.map((tag, idx) => (<Badge key={idx}>{tag}</Badge>))}
+                                        </span>
+                                    </div>
+                                </CardTitle>
+                                <CardDescription>
+                                    {farm?.description}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex flex-col gap-8 justify-start">
+                                    <div className="flex flex-col gap-4 justify-start">
+                                        <div className="flex flex-row gap-4">
+                                            <Check className="w-4 h-4 mt-2 text-primary" />
+                                            <div className="flex flex-col">
+                                                <p>Farming Season:</p>
+                                                <p className="text-muted-foreground text-sm">
+                                                    {new Date(farm?.season?.start!).toLocaleDateString()} - {new Date(farm?.season?.start!).toLocaleDateString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-row gap-4">
+                                            <Check className="w-4 h-4 mt-2 text-primary" />
+                                            <div className="flex flex-col">
+                                                <p>Location</p>
+                                                <p className="text-muted-foreground text-sm">
+                                                    {farm?.location}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-row gap-4">
+                                            <Check className="w-4 h-4 mt-2 text-primary" />
+                                            <div className="flex flex-col">
+                                                <p>Average Annual Return</p>
+                                                <p className="text-muted-foreground text-sm">
+                                                    {farm?.arr} %
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
-
+                    <div>
+                        <Card className="">
+                            <CardHeader>
+                                <CardTitle className="text-2xl">Farm Details</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <form className="grid gap-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="farmName">Preferred Farm name</Label>
+                                        <Input
+                                            id="farmName"
+                                            type="text"
+                                            placeholder="Enter your farm name"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="harvestProceeds">Harvest Proceeds as</Label>
+                                        <Select>
+                                            <SelectTrigger id="harvestProceeds">
+                                                <SelectValue placeholder="Select an option" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="cash">Cash</SelectItem>
+                                                <SelectItem value="crop">Crop</SelectItem>
+                                                <SelectItem value="rollOnToTrade">Roll on to trade</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="email">Your email</Label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="m@example.com"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="terms" />
+                                        <Label htmlFor="terms" className="text-sm">
+                                            Agree to our terms and conditions
+                                        </Label>
+                                    </div>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    </div>
 
                 </div>
             </div>
@@ -1243,5 +1374,7 @@ function Checkout() {
 
     )
 }
+
+Checkout.defaultProps = defaultValues;
 
 export default Checkout
