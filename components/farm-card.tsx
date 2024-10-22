@@ -13,6 +13,7 @@ import useCart from '@/hooks/useCart';
 
 
 const defaultValues: FarmCardProps = {
+    id: "0",
     img: "",
     cost: 35,
     location: "Tamale",
@@ -23,10 +24,13 @@ const defaultValues: FarmCardProps = {
     description: 'Our goal is to streamline SMB trade, making it easier and faster than ever for everyone and everywhere.',
     currency: "USD",
     status: false,
-    type: FarmType.CROP
+    type: FarmType.CROP,
+    rosMax: 0,
+    rosMin: 0
 }
 
 function FarmCard({
+    id,
     img,
     title,
     description,
@@ -37,7 +41,9 @@ function FarmCard({
     arr,
     season,
     status,
-    type
+    type,
+    rosMax,
+    rosMin
 }: FarmCardProps = defaultValues) {
 
     const { data: session } = useSession()
@@ -83,6 +89,7 @@ function FarmCard({
                             (
                                 <Button className="gap-4" disabled={!status} onClick={() => {
                                     addItemToCartList({
+                                        id,
                                         img,
                                         title,
                                         description,
@@ -130,9 +137,9 @@ function FarmCard({
                         <div className="flex flex-row gap-4">
                             <Check className="w-4 h-4 mt-2 text-primary" />
                             <div className="flex flex-col">
-                                <p>Average Annual Return</p>
+                                <p>Annual Return</p>
                                 <p className="text-muted-foreground text-sm">
-                                    {arr} %
+                                    {rosMin}% - {rosMax}%
                                 </p>
                             </div>
                         </div>

@@ -105,7 +105,7 @@ export enum FarmStatus {
 }
 
 export interface FarmCardProps {
-    id?: string,
+    id: string,
     img?: string,
     arr?: number,
     location?: string,

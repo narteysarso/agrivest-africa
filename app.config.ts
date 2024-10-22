@@ -59,7 +59,8 @@ const AppConfig = {
                 },
                 investor: {
                     overview: "/investor",
-                    investments: "/investor/investments"
+                    investments: "/investor/investments",
+                    checkout: "/checkout"
                 }
             }
         }
