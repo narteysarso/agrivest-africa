@@ -24,16 +24,17 @@ export const CTA = async () => {
             </p>
           </div>
           <div className="flex flex-row gap-4">
-            <Link rel='tel' href={`tel:${AppConfig.constants.defaultPhonenumber}`}>
-              <Button className="gap-4" variant="outline">
-                Jump on a call <PhoneCall className="w-4 h-4" />
-              </Button>
-            </Link>
             {!session &&
               <Button className="gap-4">
                 Sign up here <MoveRight className="w-4 h-4" />
               </Button>
             }
+            <Link rel='tel' href={`tel:${AppConfig.constants.defaultPhonenumber}`}>
+              <Button className="gap-4" variant="outline">
+                Jump on a call <PhoneCall className="w-4 h-4" />
+              </Button>
+            </Link>
+
           </div>
         </div>
       </div>

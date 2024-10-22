@@ -61,7 +61,7 @@ function FarmCard({
                             {title}
                         </span>
                         <span>
-                            {tags && tags.map((tag, idx) => (<Badge key={idx}>{tag}</Badge>))}
+                            <Badge>{type}</Badge>
                         </span>
                     </div>
                 </CardTitle>
@@ -108,7 +108,7 @@ function FarmCard({
                         <div className="flex flex-row gap-4">
                             <Check className="w-4 h-4 mt-2 text-primary" />
                             <div className="flex flex-col">
-                                <p>Annual Return</p>
+                                <p>Expected Returns</p>
                                 <p className="text-muted-foreground text-sm">
                                     {rosMin}% - {rosMax}%
                                 </p>
