@@ -8,9 +8,6 @@ import Image from 'next/image';
 import AppConfig from '@/app.config';
 import Link from 'next/link';
 import { Separator } from './ui/separator';
-import { useSession } from 'next-auth/react';
-import useCart from '@/hooks/useCart';
-
 
 const defaultValues: FarmCardProps = {
     id: "0",
@@ -45,9 +42,6 @@ function FarmCard({
     rosMax,
     rosMin
 }: FarmCardProps = defaultValues) {
-
-    const { data: session } = useSession()
-    const { setShowCart, addItemToCartList } = useCart()
     return (
         <Card className="w-full rounded-md z-[9] bg-opacity-75">
             <CardHeader>
@@ -84,22 +78,13 @@ function FarmCard({
                             / Unit
                         </span>
                     </p>
-                    {
-                        session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
-                            (
-                                <Link href={`${AppConfig.routes.pages.protected.investor.checkout}?farmId=${id}`}>
-                                    <Button className="gap-4" disabled={!status} >
-                                        Sponsor farm<MoveRight className="w-4 h-4" />
-                                    </Button>
-                                </Link>
-                            ) :
-                            (<Link href={`${AppConfig.routes.pages.protected.investor.checkout}?farmId=${id}`}>
-                                <Button variant="outline" className="gap-4">
-                                    Sign in today <MoveRight className="w-4 h-4" />
-                                </Button>
-                            </Link>
-                            )
-                    }
+
+                    <Link href={`${AppConfig.routes.pages.protected.investor.checkout}?farmId=${id}`}>
+                        <Button className="gap-4" disabled={!status} >
+                            Sponsor farm<MoveRight className="w-4 h-4" />
+                        </Button>
+                    </Link>
+
                     <Separator />
                     <div className="flex flex-col gap-4 justify-start">
                         <div className="flex flex-row gap-4">

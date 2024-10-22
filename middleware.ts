@@ -14,7 +14,7 @@ const RolePaths: { [key: string]: string[] } = {
     "investor": [
         AppConfig.routes.pages.protected.investor.overview,
         AppConfig.routes.pages.protected.investor.investments,
-        AppConfig.routes.pages.protected.investor.checkout,
+        AppConfig.routes.pages.protected.investor.checkout
     ]
 }
 
@@ -24,7 +24,7 @@ const verifyRolePath = (role: string, path: string): boolean => {
     const rolePaths = RolePaths[role];
     if (!rolePaths) return false;
 
-    return path.startsWith(rolePaths[0]);
+    return !!rolePaths.find(rolePath => rolePath === path);
 }
 
 const RolePermissions = {
@@ -46,6 +46,7 @@ export default withAuth(
         } else if (!verifyRolePath(req.nextauth.token?.role as string, req.nextUrl.pathname)) {
             return NextResponse.rewrite(new URL("/Denied", req.url));
         }
+
     },
     {
         callbacks: {
@@ -59,6 +60,6 @@ export const config = {
         "/admin/:path*",
         "/user",
         "/investor/:path*",
-        "/checkout"
+        "/checkout/:path*"
     ]
 }

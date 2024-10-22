@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -64,7 +65,13 @@ export default function LoginForm({ className, authType, ...props }: UserAuthFor
                 return setErrors(AppConfig.literals.auth.errors.invalid_credentials);
             }
 
+
             if (authType === AuthType.INVESTOR) {
+                const url = new URL(signInResponse?.url || '');
+                if (url) {
+                    const redirectUri = url.searchParams.get('callbackUrl');
+                    if (redirectUri) return router.push(redirectUri);
+                };
                 return router.push(AppConfig.routes.pages.protected.investor.overview);
             }
 

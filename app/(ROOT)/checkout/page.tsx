@@ -1510,7 +1510,7 @@ Checkout.defaultProps = defaultValues;
 export default function CheckoutPage() {
     return (
         <Suspense>
-            <Checkout />v
+            <Checkout />
         </Suspense>
     )
 }
