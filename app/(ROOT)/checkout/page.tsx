@@ -11,15 +11,15 @@ import {
 } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { useParams, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useEffect, useState, Suspense } from 'react'
 import { Check, Minus, Plus } from 'lucide-react';
-import { FarmCardProps, FarmStatus, FarmType } from '@/types';
+import { FarmCardProps, FarmType } from '@/types';
+
 import AppConfig from '@/app.config';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { PaymentMethod } from '@/components/payment-card';
 import { getFarmById } from '@/lib/utils';
 
 const defaultValues: FarmCardProps = {
@@ -121,7 +121,7 @@ function Checkout() {
             }
 
         })()
-    }, []);
+    }, [searchParams]);
 
     return (
 
@@ -1507,4 +1507,10 @@ function Checkout() {
 
 Checkout.defaultProps = defaultValues;
 
-export default Checkout
+export default function CheckoutPage() {
+    return (
+        <Suspense>
+            <Checkout />v
+        </Suspense>
+    )
+}
