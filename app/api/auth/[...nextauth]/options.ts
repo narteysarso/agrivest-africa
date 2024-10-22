@@ -39,7 +39,7 @@ export const authOptions: AuthOptions = {
                     type: "text"
                 }
             },
-            async authorize(credentials, req) {
+            async authorize(credentials) {
                 try {
                     if (!credentials?.email || !credentials?.password || !credentials.authType) throw Error("Invalid request body");
 
@@ -86,6 +86,6 @@ export const authOptions: AuthOptions = {
         }
     },
     pages: {
-        signIn: AppConfig.routes.pages.staffsignin
+        signIn: AppConfig.routes.pages.signin
     }
 }

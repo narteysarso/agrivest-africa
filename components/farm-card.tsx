@@ -87,27 +87,13 @@ function FarmCard({
                     {
                         session && (session.user.role !== StaffRole.ADMIN && session.user.role !== StaffRole.STAFF) ?
                             (
-                                <Button className="gap-4" disabled={!status} onClick={() => {
-                                    addItemToCartList({
-                                        id,
-                                        img,
-                                        title,
-                                        description,
-                                        currency,
-                                        cost,
-                                        location,
-                                        tags,
-                                        arr,
-                                        season,
-                                        status,
-                                        type
-                                    })
-                                    setShowCart(true);
-                                }}>
-                                    Sponsor farm<MoveRight className="w-4 h-4" />
-                                </Button>
+                                <Link href={`${AppConfig.routes.pages.protected.investor.checkout}?farmId=${id}`}>
+                                    <Button className="gap-4" disabled={!status} >
+                                        Sponsor farm<MoveRight className="w-4 h-4" />
+                                    </Button>
+                                </Link>
                             ) :
-                            (<Link href={AppConfig.routes.pages.signin}>
+                            (<Link href={`${AppConfig.routes.pages.protected.investor.checkout}?farmId=${id}`}>
                                 <Button variant="outline" className="gap-4">
                                     Sign in today <MoveRight className="w-4 h-4" />
                                 </Button>

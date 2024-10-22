@@ -13,7 +13,8 @@ const RolePaths: { [key: string]: string[] } = {
     "staff": ["/admin"],
     "investor": [
         AppConfig.routes.pages.protected.investor.overview,
-        AppConfig.routes.pages.protected.investor.investments
+        AppConfig.routes.pages.protected.investor.investments,
+        AppConfig.routes.pages.protected.investor.checkout,
     ]
 }
 
@@ -57,6 +58,7 @@ export const config = {
     matcher: [
         "/admin/:path*",
         "/user",
-        "/investor/:path*"
+        "/investor/:path*",
+        "/checkout"
     ]
 }
