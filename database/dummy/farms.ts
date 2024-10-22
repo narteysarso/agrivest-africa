@@ -14,7 +14,9 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD",
         priority: 1,
         status: false,
-        type: FarmType.CROP
+        type: FarmType.CROP,
+        rosMax: 12,
+        rosMin: 10
     },
     {
         id: "2",
@@ -29,7 +31,9 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD",
         priority: 1,
         status: true,
-        type: FarmType.CROP
+        type: FarmType.CROP,
+        rosMax: 12,
+        rosMin: 10
     },
     {
         id: "3",
@@ -44,7 +48,9 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD",
         priority: 35,
         status: true,
-        type: FarmType.CROP
+        type: FarmType.CROP,
+        rosMax: 18,
+        rosMin: 11
     },
     {
         id: "4",
@@ -59,7 +65,9 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD",
         priority: 8,
         status: true,
-        type: FarmType.CROP
+        type: FarmType.CROP,
+        rosMax: 22,
+        rosMin: 13
     },
     {
         id: "5",
@@ -74,6 +82,8 @@ export const FarmTestData: FarmCardProps[] = [
         currency: "USD",
         priority: 4,
         status: false,
-        type: FarmType.CROP
+        type: FarmType.CROP,
+        rosMax: 22,
+        rosMin: 13
     }
 ]

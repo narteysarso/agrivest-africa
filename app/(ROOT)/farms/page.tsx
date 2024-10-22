@@ -23,7 +23,7 @@ function Farms() {
             </div>
 
             {/* backgrounds starts */}
-            <div className="backgroundShapes z-[-200]">
+            <div className="backgroundShapes z-[-200]  w-full h-full">
                 <span className="absolute left-0 top-0">
                     <svg
                         width="495"
@@ -88,7 +88,7 @@ function Farms() {
                     </svg>
                 </span>
             </div>
-            <div className="absolute -left-9 bottom-0 z-[-200] backgroundShapes">
+            <div className="absolute -left-9 bottom-0 z-[-200] backgroundShapes  w-full h-full">
                 <svg
                     width="134"
                     height="106"
@@ -658,7 +658,7 @@ function Farms() {
                     />
                 </svg>
             </div>
-            <div className="absolute -right-6 -top-6 z-[-200] backgroundShapes">
+            <div className="absolute -right-6 -top-6 z-[-200] backgroundShapes  w-full h-full">
                 <svg
                     width="134"
                     height="106"

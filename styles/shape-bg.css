@@ -1,3 +1,8 @@
+.backgroundShapes{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 .backgroundShapes svg > circle,
 .backgroundShapes svg > path {
     stroke: #fec921 !important;

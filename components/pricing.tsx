@@ -11,8 +11,10 @@ export const Pricing = () => {
     <div className="w-full py-5 lg:py-10 relative">
       <div className="container mx-auto">
         <div className="flex text-center justify-center items-center gap-4 flex-col z-[9]">
-          <Badge>Pricing</Badge>
           <div className="flex gap-2 flex-col">
+            <h2 className="text-3xl md:text-5xl tracking-tighter max-w-xl text-center font-regular">
+              Prices that make sense!
+            </h2>
             <p className="text-lg leading-relaxed tracking-tight text-muted-foreground max-w-xl text-center">
               Managing a small farm today is already tough. <br /> <span> Let&apos;s make it easy</span>
             </p>
@@ -23,7 +25,7 @@ export const Pricing = () => {
       </div>
 
       {/* backgrounds starts */}
-      <div className="backgroundShapes z-[-200]">
+      <div className="backgroundShapes z-[-200] w-full h-full">
         <span className="absolute left-0 top-0">
           <svg
             width="495"
@@ -88,7 +90,7 @@ export const Pricing = () => {
           </svg>
         </span>
       </div>
-      <div className="absolute -left-9 bottom-0 z-[-200] backgroundShapes">
+      <div className="absolute z-[-200] backgroundShapes  w-full h-full">
         <svg
           width="134"
           height="106"
@@ -658,7 +660,7 @@ export const Pricing = () => {
           />
         </svg>
       </div>
-      <div className="absolute -right-6 -top-6 z-[-200] backgroundShapes">
+      <div className="z-[-200] backgroundShapes  w-full h-full">
         <svg
           width="134"
           height="106"
