@@ -32,8 +32,10 @@ export default function RootLayout({
         <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
 
           <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
-            <div className="absolute inset-0 bg-zinc-900" />
-            <div className="relative z-20 flex items-center text-lg font-medium">
+            <div className=" bg-cover absolute inset-0 bg-zinc-900" style={{
+              backgroundImage: "url('https://res.cloudinary.com/dencsfc5x/image/upload/v1729681277/IMG_6706_kagp4d.jpg')"
+            }}/>
+            <div className="relative z-20 flex items-center text-lg font-medium" >
               <Link href={"/"} className="flex">
                 <Image
                   src={process.env.APP_ICON as string}
@@ -43,7 +45,7 @@ export default function RootLayout({
                 /> {process.env.APP_NAME}
               </Link>
             </div>
-            <div className="relative z-20 mt-auto">
+            <div className="relative mt-auto">
               <blockquote className="space-y-2">
                 <p className="text-lg">
                   &ldquo;This library has saved me countless hours of work and
